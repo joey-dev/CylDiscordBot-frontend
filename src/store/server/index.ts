@@ -1,6 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects';
-import { IChannelsData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/ChannelSetting';
-import { IRolesData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/RoleSetting';
+import { IChannelsData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
+import { IRolesData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
 import { IFullModuleWithData } from '../../interfaces/api/Module';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import * as actionTypes from './ActionTypes';

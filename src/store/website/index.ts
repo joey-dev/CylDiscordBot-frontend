@@ -1,6 +1,6 @@
 import { ILanguages } from '@cylbot/cyldiscordbotlanguage/index';
 import { all } from 'redux-saga/effects';
-import { IIconName } from '../../atomic/atoms/images/Icon';
+import { IIconName } from '../../components/images/Icon/Icon';
 
 export interface IDisplayLanguage {
     flag: IIconName;

@@ -1,7 +1,7 @@
 import { ILanguage } from '@cylbot/cyldiscordbotlanguage';
-import { IChannelData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/ChannelSetting';
-import { IDeleteReplyData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/DeleteReply';
-import { IRoleData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/RoleSetting';
+import { IChannelData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
+import { IDeleteReplyData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/DeleteReply/DeleteReply';
+import { IRoleData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
 
 export type IComponentTypes =
     'command';

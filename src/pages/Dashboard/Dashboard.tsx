@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import Loader from '../../atomic/atoms/Loader/Loader';
-import { default as DashboardTemplate } from '../../atomic/templates/Dashboard/Dashboard';
+import Loader from '../../components/layout/Loader/Loader';
+import { default as DashboardTemplate } from './DashboardTemplate/DashboardTemplate';
 import { IUserLogin } from '../../interfaces/api/User';
 import { MapStateToProps } from '../../store';
 import { ServerStoreState } from '../../store/server';

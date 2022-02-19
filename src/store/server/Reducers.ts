@@ -1,5 +1,5 @@
-import { IChannelData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/ChannelSetting';
-import { IRoleData } from '../../atomic/modecules/dashboard/itemDisplay/settings/types/RoleSetting';
+import { IChannelData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
+import { IRoleData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
 import { IFullPluginWithData } from '../../interfaces/api/Plugin';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import UpdateObject from '../../services/reducer/UpdateObject/UpdateObject';
