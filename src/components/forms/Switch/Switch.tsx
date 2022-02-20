@@ -5,6 +5,7 @@ import React from 'react';
 type Props = {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     checked?: boolean;
+    disabled?: boolean;
 };
 
 const Switch: React.FC<Props> = (props: Props) => {
@@ -15,6 +16,7 @@ const Switch: React.FC<Props> = (props: Props) => {
             color="info"
             checked={props.checked}
             onChange={props.onChange}
+            disabled={props.disabled}
         />
     );
 };

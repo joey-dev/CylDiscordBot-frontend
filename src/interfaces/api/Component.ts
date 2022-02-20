@@ -1,5 +1,4 @@
 import { ILanguage } from '@cylbot/cyldiscordbotlanguage';
-import { IDeleteReplyData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/DeleteReply/DeleteReply';
 
 export type IComponentTypes =
     'command';
@@ -20,7 +19,7 @@ export interface IFullComponentWithData extends IFullComponent {
     server_data: string;
 }
 
-export type IComponentDataTypes = 'role' | 'channel' | 'deleteCommand' | 'deleteReply' | 'ephemeral';
+export type IComponentDataTypes = 'role' | 'channel' | 'type' | 'deleteCommand' | 'deleteReply' | 'ephemeral';
 
 export interface IComponentSettings {
     name: IComponentDataTypes;
@@ -32,7 +31,7 @@ export interface IComponentServerSettings {
     data: IComponentServerSettingsData;
 }
 
-export type IComponentServerSettingsData = object | IRoleData | IChannelData | IDeleteReplyData;
+export type IComponentServerSettingsData = object | IRoleData | IChannelData | ITypeData | IDeleteReplyData;
 
 export interface IChannelData {
     channels: IChannelsData[];
@@ -52,3 +51,11 @@ export interface IRolesData {
     name: string;
 }
 
+export interface ITypeData {
+    prefix: boolean;
+    slash: boolean;
+}
+
+export interface IDeleteReplyData {
+    second: string;
+}

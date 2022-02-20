@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ISharedData } from '../ComponentSettings';
 import ChannelSetting
     from './componentSettingTypes/ChannelSetting/ChannelSetting';
 import DeleteCommand
@@ -9,6 +10,7 @@ import Ephemeral from './componentSettingTypes/Ephemeral/Ephemeral';
 import RoleSetting from './componentSettingTypes/RoleSetting/RoleSetting';
 import { IComponentServerSettings, IComponentSettings } from '../../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
+import TypeSetting from './componentSettingTypes/TypeSetting/TypeSetting';
 
 
 const StyledComponent = styled.div`
@@ -22,6 +24,7 @@ type Props = {
     serverData: IComponentServerSettings;
     onComponentSettingChange: (data: IComponentServerSettings) => void;
     isModalOpen: boolean;
+    sharedData: ISharedData;
 };
 
 const ComponentSettings: React.FC<Props> = (props: Props) => {
@@ -44,6 +47,13 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                 isModalOpen={props.isModalOpen}
             />;
             break;
+        case 'type':
+            returnElement = <TypeSetting settings={props.serverData}
+                detailedServer={props.detailedServer}
+                onComponentSettingChange={props.onComponentSettingChange}
+                isModalOpen={props.isModalOpen}
+            />;
+            break;
         case 'deleteCommand':
             returnElement = <DeleteCommand settings={props.serverData}
                 detailedServer={props.detailedServer}
@@ -63,6 +73,7 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                 detailedServer={props.detailedServer}
                 onComponentSettingChange={props.onComponentSettingChange}
                 isModalOpen={props.isModalOpen}
+                sharedData={props.sharedData}
             />;
             break;
         default:

@@ -7,8 +7,8 @@ import ComponentSetting from './ComponentSetting/ComponentSetting';
 import {
     IComponentDataTypes,
     IComponentServerSettings,
-    IComponentSettings,
-    IFullComponentWithData,
+    IComponentSettings, IDeleteReplyData,
+    IFullComponentWithData, ITypeData,
 } from '../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../interfaces/api/Server';
 import CapitalizeFirstLetter from '../../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
@@ -41,6 +41,10 @@ const StyledModal = styled.div`
 const StyledSettings = styled.div`
 `;
 
+export interface ISharedData {
+    type: ITypeData;
+    deleteReply: boolean
+}
 
 type Props = {
     open: boolean;
@@ -51,14 +55,27 @@ type Props = {
 };
 
 const ComponentSettings: React.FC<Props> = (props: Props) => {
-    const data = JSON.parse(props.component.data);
-    const serverData = JSON.parse(props.component.server_data);
+    const data = JSON.parse(props.component.data) as IComponentSettings[];
+    const serverData = JSON.parse(props.component.server_data) as IComponentServerSettings[];
 
     const languageName = props.detailedServer.language.small_name;
     const settingsTitleEditWord: string = CapitalizeFirstLetter(getItemTranslate(languageName, 'EDIT'));
     const settingsTitleNameWord: string = getItemTranslate(languageName, props.component.name);
     const settingsTitleSettingsWord: string = getItemTranslate(languageName, 'SETTINGS');
     const settingsTitle = `${settingsTitleEditWord} ${settingsTitleNameWord} ${settingsTitleSettingsWord}`;
+
+    const unsortedSharedData = serverData.filter(unsortedItem => unsortedItem.name === "type" || unsortedItem.name === "deleteReply");
+    const typeData = unsortedSharedData.find(unsortedSharedItem => unsortedSharedItem.name === "type");
+    const deleteReplyData = unsortedSharedData.find(unsortedSharedItem => unsortedSharedItem.name === "deleteReply");
+
+    if (!typeData || !deleteReplyData) {
+        throw new Error('serverData has not been set in the database, or is wrong on: type or deleteCommand');
+    }
+
+    const sharedData: ISharedData = {
+        type: typeData.data as ITypeData,
+        deleteReply: deleteReplyData.turned_on as boolean,
+    }
 
     return (
         <Modal
@@ -83,6 +100,7 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                                 props.onComponentSettingChange(editServerData(serverData, newSettings, item.name))
                             }
                             isModalOpen={props.open}
+                            sharedData={sharedData}
                         />,
                     )}
                 </StyledSettings>
