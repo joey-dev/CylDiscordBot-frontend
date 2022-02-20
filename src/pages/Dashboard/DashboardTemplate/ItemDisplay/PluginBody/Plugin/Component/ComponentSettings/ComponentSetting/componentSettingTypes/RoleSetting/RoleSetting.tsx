@@ -1,18 +1,19 @@
 import { getItemTranslate } from '@cylbot/cyldiscordbotlanguage/index';
 import { QuestionMark } from '@mui/icons-material';
-import { Autocomplete, AutocompleteRenderInputParams, IconButton, TextField, Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Switch from '../../../../../../../../../../../components/forms/Switch/Switch';
 import Paragraph from '../../../../../../../../../../../components/text/Paragraph/Paragraph';
-import { IComponentServerSettings } from '../../../../../../../../../../../interfaces/api/Component';
+import { IComponentServerSettings, IRolesData } from '../../../../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../../../../interfaces/api/Server';
 import CapitalizeFirstLetter from '../../../../../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
 import { MapStateToProps } from '../../../../../../../../../../../store';
 import { ServerStoreState } from '../../../../../../../../../../../store/server';
 import { getServerRolesStart } from '../../../../../../../../../../../store/server/Action';
+import RoleSettingAutoComplete from './RoleSettingAutoComplete';
 
 
 const StyledSetting = styled.div`
@@ -26,14 +27,6 @@ const StyledSwitch = styled.div`
     padding: 7px 0;
 `;
 
-export interface IRoleData {
-    roles: IRolesData[];
-}
-
-export interface IRolesData {
-    id: string;
-    name: string;
-}
 
 type RoleSettingsProps = {
     settings: IComponentServerSettings;
@@ -121,47 +114,14 @@ const RoleSetting: React.FC<Props> = (props: Props) => {
                 {props.settings.turned_on ? enabledName : disabledName} {rolesName}:
             </Paragraph>
             <StyledAutoComplete>
-                <Autocomplete
-                    disablePortal
-                    disableCloseOnSelect
-                    options={getValueForAutoCompleteFromRoles(props.roles)}
-                    id="combo-box-demo"
-                    size="small"
-                    multiple
-                    sx={{width: '100%'}}
-                    renderInput={(renderInputParams: AutocompleteRenderInputParams) =>
-                        <TextField color="info" {...renderInputParams}
-                            label={rolesName}
-                        />}
-                    onOpen={() => getRoles()}
-                    onClose={() => {
-                        props.onComponentSettingChange(
-                            {
-                                ...props.settings,
-                                ...{data: editRoleData(props.settings.data, selectedRoles)},
-                            },
-                        );
-                    }}
-                    onChange={(event, value, reason) => {
-                        const fullRoles = getValueForRolesFromAutoComplete(value, props.roles);
-                        setSelectedRoles(fullRoles);
-                        if (reason === 'clear') {
-                            props.onComponentSettingChange(
-                                {
-                                    ...props.settings,
-                                    ...{data: editRoleData(props.settings.data, [])},
-                                },
-                            );
-                        } else if (reason === 'removeOption') {
-                            props.onComponentSettingChange(
-                                {
-                                    ...props.settings,
-                                    ...{data: editRoleData(props.settings.data, fullRoles)},
-                                },
-                            );
-                        }
-                    }}
-                    value={getValueForAutoCompleteFromRoles(selectedRoles)}
+                <RoleSettingAutoComplete
+                    name={rolesName}
+                    getItems={getRoles}
+                    onComponentSettingChange={props.onComponentSettingChange}
+                    roles={props.roles}
+                    settings={props.settings}
+                    selectedRoles={selectedRoles}
+                    setSelectedRoles={setSelectedRoles}
                 />
             </StyledAutoComplete>
         </StyledSetting>
@@ -170,39 +130,6 @@ const RoleSetting: React.FC<Props> = (props: Props) => {
 
 const hasCorrectData = (data: object): boolean => 'roles' in data;
 
-const getValueForAutoCompleteFromRoles = (roles: IRolesData[] | undefined): string[] => {
-    if (!roles || roles.length === 0) {
-        return [];
-    }
-
-    const returnValue: string[] = [];
-    roles.forEach(role => {
-        returnValue.push(role.name);
-    });
-
-    if (returnValue.length === 0) {
-        return [];
-    }
-
-    return returnValue;
-};
-
-const getValueForRolesFromAutoComplete = (roles: string[], allRoles: IRolesData[] | undefined): IRolesData[] => {
-    if (!allRoles || roles.length === 0) {
-        return [];
-    }
-
-    const returnValue: IRolesData[] = [];
-
-    roles.forEach(role => {
-        const foundRole = allRoles.find(allRole => allRole.name === role);
-        if (foundRole) {
-            returnValue.push(foundRole);
-        }
-    });
-
-    return returnValue;
-};
 
 const editRoleData = (data: object, roles: IRolesData[]): object => {
     data = {

@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import { IFullModuleWithData } from '../../../../../interfaces/api/Module';
 import { IDetailedServer } from '../../../../../interfaces/api/Server';
 import { IEditServerData } from '../../../../../store/server/Sagas';
 import Module from './Module/Module';
 
-
-const StyledDiv = styled.div`
-    margin-top: 10px;
-`;
 
 type Props = {
     server: IDetailedServer;

@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import Dashboard from '../../../pages/Dashboard/Dashboard';
 
 
-export default [
+const PrivateRoute = [
     <Route path="/dashboard"
         element={<Dashboard loading={false} />}
         key="dashboard"
@@ -17,3 +17,5 @@ export default [
         </Route>
     </Route>
 ];
+
+export default PrivateRoute;

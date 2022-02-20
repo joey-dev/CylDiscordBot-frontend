@@ -1,5 +1,4 @@
-import { IChannelData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
-import { IRoleData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
+import { IChannelData, IRoleData } from '../../interfaces/api/Component';
 import { IFullPluginWithData } from '../../interfaces/api/Plugin';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import * as actionTypes from './ActionTypes';

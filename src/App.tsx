@@ -24,7 +24,7 @@ const App: React.FC<Props> = (props: Props) => {
         if (!props.isAuthenticated) {
             onTryAutoSignUp();
         }
-    }, [onTryAutoSignUp]);
+    }, [onTryAutoSignUp, props.isAuthenticated]);
 
     const routes = (
         <React.Fragment>

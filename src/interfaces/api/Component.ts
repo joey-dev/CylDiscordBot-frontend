@@ -1,7 +1,5 @@
 import { ILanguage } from '@cylbot/cyldiscordbotlanguage';
-import { IChannelData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
 import { IDeleteReplyData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/DeleteReply/DeleteReply';
-import { IRoleData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
 
 export type IComponentTypes =
     'command';
@@ -35,3 +33,22 @@ export interface IComponentServerSettings {
 }
 
 export type IComponentServerSettingsData = object | IRoleData | IChannelData | IDeleteReplyData;
+
+export interface IChannelData {
+    channels: IChannelsData[];
+}
+
+export interface IChannelsData {
+    id: string;
+    name: string;
+}
+
+export interface IRoleData {
+    roles: IRolesData[];
+}
+
+export interface IRolesData {
+    id: string;
+    name: string;
+}
+

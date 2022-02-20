@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Switch from '../../../../../../../../../../../components/forms/Switch/Switch';
 import Paragraph from '../../../../../../../../../../../components/text/Paragraph/Paragraph';
-import { IComponentServerSettings } from '../../../../../../../../../../../interfaces/api/Component';
+import { IRolesData, IComponentServerSettings } from '../../../../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../../../../interfaces/api/Server';
 import CapitalizeFirstLetter from '../../../../../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
 import { MapStateToProps } from '../../../../../../../../../../../store';
@@ -16,25 +16,10 @@ import { getServerChannelsStart } from '../../../../../../../../../../../store/s
 import ChannelSettingAutoComplete from './ChannelSettingAutoComplete';
 
 
-const StyledSetting = styled.div`
-`;
-
-const StyledAutoComplete = styled.div`
-`;
-
 const StyledSwitch = styled.div`
     text-align: right;
     padding: 7px 0;
 `;
-
-export interface IChannelData {
-    channels: IChannelsData[];
-}
-
-export interface IChannelsData {
-    id: string;
-    name: string;
-}
 
 type ChannelSettingsProps = {
     settings: IComponentServerSettings;
@@ -54,7 +39,7 @@ const ChannelSetting: React.FC<Props> = (props: Props) => {
         throw new Error('data for channel settings is incorrect!');
     }
 
-    const [selectedChannels, setSelectedChannels] = useState<IChannelsData[]>([]);
+    const [selectedChannels, setSelectedChannels] = useState<IRolesData[]>([]);
     const params = useParams();
 
     useEffect(() => {
@@ -84,7 +69,7 @@ const ChannelSetting: React.FC<Props> = (props: Props) => {
 
 
     return (
-        <StyledSetting>
+        <div>
             <Paragraph size={'small'}
                 css={'float: left'}
             >{channelsSwitchDescription}</Paragraph>
@@ -106,68 +91,22 @@ const ChannelSetting: React.FC<Props> = (props: Props) => {
             <Paragraph size={'small'}>
                 {props.settings.turned_on ? enabledName : disabledName} {channelsName}:
             </Paragraph>
-            <StyledAutoComplete>
+            <div>
                 <ChannelSettingAutoComplete
-                    getValueForAutoCompleteFromChannels={getValueForAutoCompleteFromChannels}
                     channels={props.channels}
                     name={channelsName}
                     getItems={getChannels}
                     onComponentSettingChange={props.onComponentSettingChange}
                     settings={props.settings}
                     selectedChannels={selectedChannels}
-                    editChannelData={editChannelData}
-                    getValueForChannelsFromAutoComplete={getValueForChannelsFromAutoComplete}
                     setSelectedChannels={setSelectedChannels}
                 />
-            </StyledAutoComplete>
-        </StyledSetting>
+            </div>
+        </div>
     );
 };
 
 const hasCorrectData = (data: object): boolean => 'channels' in data;
-
-const getValueForAutoCompleteFromChannels = (channels: IChannelsData[] | undefined): string[] => {
-    if (!channels || channels.length === 0) {
-        return [];
-    }
-
-    const returnValue: string[] = [];
-    channels.forEach(channel => {
-        returnValue.push(channel.name);
-    });
-
-    if (returnValue.length === 0) {
-        return [];
-    }
-
-    return returnValue;
-};
-
-const getValueForChannelsFromAutoComplete = (channels: string[], allChannels: IChannelsData[] | undefined): IChannelsData[] => {
-    if (!allChannels || channels.length === 0) {
-        return [];
-    }
-
-    const returnValue: IChannelsData[] = [];
-
-    channels.forEach(channel => {
-        const foundChannel = allChannels.find(allChannel => allChannel.name === channel);
-        if (foundChannel) {
-            returnValue.push(foundChannel);
-        }
-    });
-
-    return returnValue;
-};
-
-const editChannelData = (data: object, channels: IChannelsData[]): object => {
-    data = {
-        ...data,
-        channels: channels,
-    };
-
-    return data;
-};
 
 const mapStateToProps = (state: MapStateToProps) => {
     return {

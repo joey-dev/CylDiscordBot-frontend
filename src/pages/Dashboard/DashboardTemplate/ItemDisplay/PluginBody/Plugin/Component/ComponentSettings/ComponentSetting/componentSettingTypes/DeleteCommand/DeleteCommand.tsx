@@ -9,12 +9,6 @@ import { IComponentServerSettings } from '../../../../../../../../../../../inter
 import { IDetailedServer } from '../../../../../../../../../../../interfaces/api/Server';
 
 
-const StyledSetting = styled.div`
-`;
-
-const StyledAutoComplete = styled.div`
-`;
-
 const StyledSwitch = styled.div`
     text-align: right;
     padding: 7px 0;
@@ -34,7 +28,7 @@ const DeleteCommand: React.FC<Props> = (props: Props) => {
 
 
     return (
-        <StyledSetting>
+        <div>
             <Paragraph size={'small'}
                 css={'float: left'}
             >{deleteCommandsSwitchDescription}</Paragraph>
@@ -53,7 +47,7 @@ const DeleteCommand: React.FC<Props> = (props: Props) => {
                     checked={props.settings.turned_on}
                 />
             </StyledSwitch>
-        </StyledSetting>
+        </div>
     );
 };
 

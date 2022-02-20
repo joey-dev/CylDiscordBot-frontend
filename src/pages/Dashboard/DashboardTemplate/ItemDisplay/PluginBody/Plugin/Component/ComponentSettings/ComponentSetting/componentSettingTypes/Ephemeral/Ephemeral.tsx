@@ -4,17 +4,10 @@ import { IconButton, Tooltip } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 import Switch from '../../../../../../../../../../../components/forms/Switch/Switch';
+import Paragraph from '../../../../../../../../../../../components/text/Paragraph/Paragraph';
 import { IComponentServerSettings } from '../../../../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../../../../interfaces/api/Server';
-import { ServerStoreState } from '../../../../../../../../../../../store/server';
-import Paragraph from '../../../../../../../../../../../components/text/Paragraph/Paragraph';
 
-
-const StyledSetting = styled.div`
-`;
-
-const StyledAutoComplete = styled.div`
-`;
 
 const StyledSwitch = styled.div`
     text-align: right;
@@ -35,10 +28,10 @@ const Ephemeral: React.FC<Props> = (props: Props) => {
 
 
     return (
-        <StyledSetting>
+        <div>
             <Paragraph
-                size={"small"}
-                css={"float: left"}
+                size={'small'}
+                css={'float: left'}
             >{EphemeralSwitchDescription}</Paragraph>
             <Tooltip title={EphemeralSwitchDetailedDescription}>
                 <IconButton sx={{width: '20px', float: 'left'}}>
@@ -55,7 +48,7 @@ const Ephemeral: React.FC<Props> = (props: Props) => {
                     checked={props.settings.turned_on}
                 />
             </StyledSwitch>
-        </StyledSetting>
+        </div>
     );
 };
 

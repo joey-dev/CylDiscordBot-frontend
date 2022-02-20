@@ -1,15 +1,11 @@
 import { getItemTranslate } from '@cylbot/cyldiscordbotlanguage/index';
 import React from 'react';
-import styled from 'styled-components';
+import Title from '../../../../../../components/text/Title/Title';
 import { IFullModuleWithData } from '../../../../../../interfaces/api/Module';
 import { IDetailedServer } from '../../../../../../interfaces/api/Server';
 import { IEditServerData } from '../../../../../../store/server/Sagas';
-import Title from '../../../../../../components/text/Title/Title';
 import Plugin from './Plugin/Plugin';
 
-
-const StyledDiv = styled.div`
-`;
 
 type Props = {
     data: IFullModuleWithData;

@@ -1,6 +1,5 @@
 import { all, takeEvery } from 'redux-saga/effects';
-import { IChannelsData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
-import { IRolesData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
+import { IRolesData } from '../../interfaces/api/Component';
 import { IFullModuleWithData } from '../../interfaces/api/Module';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import * as actionTypes from './ActionTypes';
@@ -22,7 +21,7 @@ export type ServerStoreState = {
     server?: IDetailedServer;
     modules?: IFullModuleWithData[];
     roles?: IRolesData[];
-    channels?: IChannelsData[];
+    channels?: IRolesData[];
     loading: boolean
     success?: boolean
     error?: string

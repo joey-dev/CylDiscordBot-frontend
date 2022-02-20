@@ -1,5 +1,4 @@
-import { IChannelData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/ChannelSetting/ChannelSetting';
-import { IRoleData } from '../../pages/Dashboard/DashboardTemplate/ItemDisplay/PluginBody/Plugin/Component/ComponentSettings/ComponentSetting/componentSettingTypes/RoleSetting/RoleSetting';
+import { IChannelData, IRoleData } from '../../interfaces/api/Component';
 import { IFullPluginWithData } from '../../interfaces/api/Plugin';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import UpdateObject from '../../services/reducer/UpdateObject/UpdateObject';
@@ -42,7 +41,12 @@ const userReducer = (state: ServerStoreState = initialState, {type, payload}: Ac
         case ActionTypes.SET_SERVER_START:
             return UpdateObject(state, {loading: true});
         case ActionTypes.SET_SERVER_FINISH:
-            return UpdateObject(state, {loading: false, server: payload.server, modules: payload.modules, success: true});
+            return UpdateObject(state, {
+                loading: false,
+                server: payload.server,
+                modules: payload.modules,
+                success: true,
+            });
         case ActionTypes.GET_SERVER_ERROR:
             return UpdateObject(state, {loading: false, error: payload.error, server: undefined});
         case ActionTypes.EDIT_SERVER_DATA_FINISH:

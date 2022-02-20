@@ -46,7 +46,7 @@ const Paragraph: React.FC<Props> = (props: Props) => {
             sizeValue = '25px';
             break;
         default:
-            throw 'paragraph size is not defined!';
+            throw new Error('paragraph size is not defined!');
     }
 
     return (
