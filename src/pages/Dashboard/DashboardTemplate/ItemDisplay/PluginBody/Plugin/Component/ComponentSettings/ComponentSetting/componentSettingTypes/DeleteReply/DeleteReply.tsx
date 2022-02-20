@@ -20,10 +20,6 @@ const StyledSwitch = styled.div`
     padding: 7px 0;
 `;
 
-export interface IDeleteReplyData {
-    second: string;
-}
-
 type Props = {
     settings: IComponentServerSettings;
     detailedServer: IDetailedServer;

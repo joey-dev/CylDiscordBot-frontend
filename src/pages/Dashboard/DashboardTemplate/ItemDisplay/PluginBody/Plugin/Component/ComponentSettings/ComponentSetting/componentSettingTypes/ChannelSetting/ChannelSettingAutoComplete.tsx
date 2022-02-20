@@ -2,7 +2,7 @@ import React from 'react';
 import { IRolesData, IComponentServerSettings } from '../../../../../../../../../../../interfaces/api/Component';
 import AutoComplete from '../AutoComplete';
 
-
+//TODO: fix types
 type Props = {
     name: string;
     getItems: () => void;
