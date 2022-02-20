@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Button } from '@mui/material';
-import Loader from './atomic/atoms/Loader/Loader';
-import Header from './atomic/templates/layout/Header';
-import Layout from './components/layouts/Layout/Layout';
-import AuthRedirect from './pages/Auth/Auth';
-import Dashboard from './pages/Dashboard/Dashboard';
+import Loader from './components/layout/Loader/Loader';
+import Header from './components/layout/Header/Header';
+import PrivateRoute from './components/routing/PrivateRoute/PrivateRoute';
+import AuthRedirect from './pages/AuthRedirect/AuthRedirect';
 import Home from './pages/Home/Home';
+import NotFound from './pages/NotFound/NotFound';
 import { MapStateToProps } from './store';
 import { authCheckState } from './store/auth/Action';
 
@@ -19,15 +18,13 @@ type Props = {
 };
 
 const App: React.FC<Props> = (props: Props) => {
-    const navigate = useNavigate();
-
     const {onTryAutoSignUp} = props;
 
     useEffect(() => {
         if (!props.isAuthenticated) {
             onTryAutoSignUp();
         }
-    }, [onTryAutoSignUp]);
+    }, [onTryAutoSignUp, props.isAuthenticated]);
 
     const routes = (
         <React.Fragment>
@@ -40,43 +37,18 @@ const App: React.FC<Props> = (props: Props) => {
                 <Route path="/auth/redirect"
                     element={<AuthRedirect token={null} />}
                 />
-                {props.isAuthenticated ? (
-                    <React.Fragment>
-                        <Route path="/dashboard"
-                            element={<Dashboard loading={false} />}
-                        >
-                            <Route path=":serverId"
-                                element={<Dashboard loading={false} />}
-                            >
-                                <Route path=":moduleId/:pluginId"
-                                    element={<Dashboard loading={false} />}
-                                />
-                            </Route>
-                        </Route>
-                    </React.Fragment>
-                ) : ''}
-
+                {props.isAuthenticated && (
+                    PrivateRoute.map(route => route)
+                )}
                 <Route
                     path="*"
-                    element={
-                        <main style={{padding: '1rem'}}>
-                            <p>404 page not found</p>
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => {
-                                    navigate('/');
-                                }}
-                            > Go Back Home
-                            </Button>
-                        </main>
-                    }
+                    element={<NotFound />}
                 />
             </Routes>
         </React.Fragment>
     );
 
-    return <Layout>{props.isAutoSigningUp ? <Loader centered={true} /> : routes}</Layout>;
+    return <div>{props.isAutoSigningUp ? <Loader centered={true} /> : routes}</div>;
 };
 
 const mapStateToProps = (state: MapStateToProps) => {
