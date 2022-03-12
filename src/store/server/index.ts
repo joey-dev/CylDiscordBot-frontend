@@ -22,7 +22,7 @@ export type ServerStoreState = {
     modules?: IFullModuleWithData[];
     roles?: IRolesData[];
     channels?: IRolesData[];
-    loading: boolean
+    loading?: boolean
     success?: boolean
     error?: string
 };

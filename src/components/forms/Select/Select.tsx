@@ -2,14 +2,14 @@ import { SelectChangeEvent, Select as MuiSelect } from '@mui/material';
 import React from 'react';
 
 
-type Props = {
+export type SelectProps = {
     value: string;
     label: string;
     children: React.ReactNode;
     onChange: (event: SelectChangeEvent) => void;
 };
 
-const Select: React.FC<Props> = (props: Props) => {
+const Select: React.FC<SelectProps> = (props: SelectProps) => {
     return (
         <MuiSelect
             labelId="demo-simple-select-standard-label"
@@ -17,6 +17,7 @@ const Select: React.FC<Props> = (props: Props) => {
             value={props.value}
             onChange={props.onChange}
             label={props.label}
+            color={"primary"}
         >
             {props.children}
         </MuiSelect>

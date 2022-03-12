@@ -8,21 +8,8 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
+import theme from './util/Theme';
 
-const theme = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#36393f',
-        },
-        secondary: {
-            main: '#ffffff',
-        },
-        info: {
-            main: '#e2409e',
-        },
-    },
-});
 
 ReactDOM.render(
     <React.StrictMode>
