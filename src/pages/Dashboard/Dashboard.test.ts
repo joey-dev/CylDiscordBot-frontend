@@ -1,5 +1,4 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { Router } from 'react-router-dom';
 import UseDashboardLogic, { DashboardLogicProps } from './Dashboard.logic';
 import * as ReactRouterDom from 'react-router-dom';
 
