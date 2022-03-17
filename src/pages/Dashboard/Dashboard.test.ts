@@ -1,17 +1,15 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { Router } from 'react-router-dom';
 import UseDashboardLogic, { DashboardLogicProps } from './Dashboard.logic';
+import * as ReactRouterDom from 'react-router-dom';
+
 
 const mockedUsedNavigate = jest.fn();
-const mockedUseParams = jest.fn();
 
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
+    ...jest.requireActual('react-router-dom') as typeof ReactRouterDom,
     useNavigate: () => mockedUsedNavigate,
-}));
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: () => mockedUseParams,
+    useParams: jest.fn().mockReturnValue({}),
 }));
 
 describe('In the dashboard: ', () => {
@@ -66,6 +64,8 @@ describe('In the dashboard: ', () => {
     });
 
     test('onComponentOrPluginSettingsChange runs function editServerDataStart on launch with currentServerId', () => {
+        jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({'serverId': '24324'});
+
         const {result} = renderHook(() => UseDashboardLogic({
             editServerDataStart: parameters.editServerDataStart,
             getServersStart: parameters.getServersStart,
@@ -84,6 +84,8 @@ describe('In the dashboard: ', () => {
 
 
     test('onComponentOrPluginSettingsChange runs function editServerDataStart on launch without currentServerId', () => {
+        jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({});
+
         const {result} = renderHook(() => UseDashboardLogic({
             editServerDataStart: parameters.editServerDataStart,
             servers: parameters.servers,
