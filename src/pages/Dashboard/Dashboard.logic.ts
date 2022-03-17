@@ -10,9 +10,9 @@ type ReturnValue = {
     data?: {
         servers: IServer[];
         currentServerId?: string;
-        onPluginEnabledChange: (event: IEditServerData) => void;
-        onComponentEnabledChange: (event: IEditServerData) => void;
-        onComponentSettingChange: (data: IEditServerData) => void;
+        onPluginEnabledChange: (event: IEditServerData) => boolean;
+        onComponentEnabledChange: (event: IEditServerData) => boolean;
+        onComponentSettingChange: (data: IEditServerData) => boolean;
     };
 }
 
