@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import ListItem from '../ListItem/ListItem';
+import ListItem from './ListItem/ListItem';
+import { List as MuiList } from '@mui/material';
 
 
 const StyledDiv = styled.div`
@@ -9,7 +10,11 @@ const StyledDiv = styled.div`
 
 export type IListItem = {
     key: string,
-    value: JSX.Element|string,
+    value: {
+        logo: JSX.Element,
+        text: string,
+        icon: JSX.Element,
+    },
 }
 
 type Props = {
@@ -35,9 +40,7 @@ const List: React.FC<Props> = (props: Props) => {
                 return ""
             }
             return (
-                <ListItem onClick={() => OnNewItemSelected(item.key)}>
-                    {item.value}
-                </ListItem>
+                <ListItem item={item} onClick={() => OnNewItemSelected(item.key)} />
             )
         });
     }, [props.items]);
@@ -48,17 +51,13 @@ const List: React.FC<Props> = (props: Props) => {
 
     const OnNewItemSelected = (key: string) => {
         setIsOpen(false);
+        console.log(`selected: ${key}`);
     }
 
     return (
-        <>
-            <ListItem>
-                {currentSelected.value}
-            </ListItem>
-            <StyledDiv>
-                {itemsToShow}
-            </StyledDiv>
-        </>
+        <MuiList>
+            {itemsToShow}
+        </MuiList>
     );
 };
 

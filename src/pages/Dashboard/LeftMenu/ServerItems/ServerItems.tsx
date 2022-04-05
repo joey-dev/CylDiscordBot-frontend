@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import Loader from '../../../../components/layout/Loader/Loader';
-import { IDetailedServer, IServer } from '../../../../interfaces/api/Server';
 import { MapStateToProps } from '../../../../store';
 import { ServerStoreState } from '../../../../store/server';
 import { UserStoreState } from '../../../../store/user';
-import ServerItem from './ServerItem/ServerItem';
+import ServerItemsLogic from './ServerItems.logic';
+import ServerItemsTemplate from './ServerItems.template';
 
-
-const StyledDiv = styled.div`
-    margin-top: 10px;
-`;
 
 type ServerItemsProps = {
     currentServerId?: string;
@@ -21,59 +15,24 @@ type ServerItemsProps = {
 type Props = UserStoreState & ServerStoreState & ServerItemsProps;
 
 const ServerItems: React.FC<Props> = (props: Props) => {
-    const navigate = useNavigate();
-    const [isListOpened, setIsListOpened] = useState(false);
-    const [currentServerId, setCurrentServerId] = useState(props.currentServerId);
-
-    let serverList: JSX.Element[] = [];
-    let currentServer: IServer | undefined;
-
-    useEffect(() => {
-        if (currentServerId === undefined) {
-            navigate('/dashboard');
-        } else {
-            navigate('/dashboard/' + currentServerId);
-        }
-    }, [currentServerId]);
-
     if (!props.servers) {
         return (
-            <Loader />
+            <Loader centered={true} />
         );
     }
 
-    for (let server of props.servers) {
-        if (currentServerId && server.id === currentServerId) {
-            currentServer = server;
-        } else {
-            serverList.push(<ServerItem key={server.id}
-                server={server}
-                detailedServer={props.server}
-                isCurrentServer={false}
-                listOpen={isListOpened}
-                onArrowClick={() => setIsListOpened(!isListOpened)}
-                onServerClick={(serverId => {
-                    setCurrentServerId(serverId);
-                    setIsListOpened(false);
-                })}
-            />);
-        }
-    }
+    const logic = ServerItemsLogic({
+        currentServerId: props.currentServerId,
+        servers: props.servers,
+        server: props.server,
+    });
 
-    return (
-        <React.Fragment>
-            <ServerItem server={currentServer}
-                isCurrentServer={true}
-                listOpen={isListOpened}
-                onArrowClick={() => setIsListOpened(!isListOpened)}
-                onServerClick={() => {
-                }}
-            />
-            <StyledDiv>
-                {isListOpened && serverList}
-            </StyledDiv>
-        </React.Fragment>
-    );
+    return <ServerItemsTemplate isListOpened={logic.isListOpened}
+        serverList={logic.serverList}
+        setIsListOpened={logic.setIsListOpened}
+        currentServer={logic.currentServer}
+    />;
+
 };
 
 const mapStateToProps = (state: MapStateToProps) => {

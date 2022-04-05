@@ -59,7 +59,7 @@ const StyledArrowDownImg = styled.img<StyledArrowDownImgProps>`
     transition: transform 0.4s ease;
 `;
 
-const StyledCheckImg = styled.img`
+export const StyledCheckImg = styled.img`
     width: 25px;
 `;
 
@@ -110,15 +110,9 @@ const ServerItem: React.FC<Props> = (props: Props) => {
                     />
                 </StyledDivImg>
             ) : (
-                props.server?.alreadyJoined ? (
-                    <StyledDivImg>
-                        <StyledCheckImg src={check} />
-                    </StyledDivImg>
-                ) : (
-                    <StyledDivImg>
-                        <StyledUnCheckImg src={uncheck} />
-                    </StyledDivImg>
-                )
+                <StyledDivImg>
+                    <StyledCheckImg src={props.server?.alreadyJoined ? check : uncheck} />
+                </StyledDivImg>
             )}
         </StyledMainDiv>
     );
