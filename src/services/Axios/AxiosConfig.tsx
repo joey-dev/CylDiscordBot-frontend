@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const baseURL = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : '/api';
+const baseURL = "http://localhost:8080/api";
 
 const AxiosConfig = (contentType: string = 'application/json') => {
+    console.log(baseURL);
     let Axios = axios.create({baseURL});
 
     const token = localStorage.getItem('token');
@@ -13,7 +14,7 @@ const AxiosConfig = (contentType: string = 'application/json') => {
             baseURL,
             headers: {
                 'Authorization': 'Bearer ' + token,
-                'user_id': '' + userId,
+                'user-id': '' + userId,
                 'Content-Type': contentType,
             },
         });
