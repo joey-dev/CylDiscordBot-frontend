@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+    ISelectWithLogoAndIconItem
+} from '../../../../components/forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem';
+import ServerLogo from '../../../../components/images/ServerLogo/ServerLogo';
 import { IDetailedServer, IServer } from '../../../../interfaces/api/Server';
-import ServerItem from './ServerItem/ServerItem';
+import ServerItem, { StyledCheckImg } from './ServerItem/ServerItem';
+import check from '../../../../assets/icons/check.svg';
+import unCheck from '../../../../assets/icons/uncheck.svg';
 
 
 interface Props {
@@ -13,7 +19,7 @@ interface Props {
 interface ReturnValue {
     currentServer?: IServer;
     isListOpened: boolean;
-    serverList: JSX.Element[];
+    serverList: ISelectWithLogoAndIconItem[];
     setIsListOpened: (value: boolean) => void;
 }
 
@@ -38,17 +44,14 @@ function ServerItemsLogic(props: Props): ReturnValue {
         if (currentServerId && server.id === currentServerId) {
             currentServer = server;
         } else {
-            serverList.push(<ServerItem key={server.id}
-                server={server}
-                detailedServer={props.server}
-                isCurrentServer={false}
-                listOpen={isListOpened}
-                onArrowClick={() => setIsListOpened(!isListOpened)}
-                onServerClick={(serverId => {
-                    setCurrentServerId(serverId);
-                    setIsListOpened(false);
-                })}
-            />);
+            serverList.push({
+                key: server.id,
+                value: {
+                    logo: <ServerLogo size={40} server={server}/>
+                    text: server.name
+                    icon: <StyledCheckImg src={server.alreadyJoined ? check : unCheck} />,
+                },
+            } as ISelectWithLogoAndIconItem)
         }
     }
 

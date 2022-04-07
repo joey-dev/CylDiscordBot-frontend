@@ -14,22 +14,20 @@ interface Props {
     onPluginEnabledChange: (event: IEditServerData) => void;
 }
 
-const LeftMenuTemplate: React.FC<Props> = (props: Props) => {
-    return (
-        <StyledLeftMenuBackground>
-            <StyledLeftMenuInnerBackground>
-                <ServerItems currentServerId={props.currentServerId}
+const LeftMenuTemplate: React.FC<Props> = (props: Props) => (
+    <StyledLeftMenuBackground>
+        <StyledLeftMenuInnerBackground>
+            <ServerItems currentServerId={props.currentServerId}
+            />
+            {(props.server !== undefined && props.modules !== undefined) && (
+                <ModuleList server={props.server}
+                    modules={props.modules}
+                    onPluginEnabledChange={props.onPluginEnabledChange}
                 />
-                {(props.server !== undefined && props.modules !== undefined) && (
-                    <ModuleList server={props.server}
-                        modules={props.modules}
-                        onPluginEnabledChange={props.onPluginEnabledChange}
-                    />
-                )}
-            </StyledLeftMenuInnerBackground>
-        </StyledLeftMenuBackground>
-    );
-};
+            )}
+        </StyledLeftMenuInnerBackground>
+    </StyledLeftMenuBackground>
+);
 
 
 export default LeftMenuTemplate;
