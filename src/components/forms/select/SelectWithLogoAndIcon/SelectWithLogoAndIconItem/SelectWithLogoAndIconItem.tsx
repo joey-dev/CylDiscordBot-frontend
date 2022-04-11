@@ -50,11 +50,12 @@ type Props = {
 const SelectWithLogoAndIconItem: React.FC<Props> = (props: Props) => {
     const arrow = <StyledArrowDownImg src={arrowDown}
         listOpen={props.isOpen || false}
-        onClick={props.onClick}
     />;
 
     return (
-        <StyledMainDiv clickable={true}>
+        <StyledMainDiv clickable={true}
+            onClick={props.onClick}
+        >
             <MuiListItem
                 secondaryAction={
                     <IconButton edge="end">
@@ -64,7 +65,6 @@ const SelectWithLogoAndIconItem: React.FC<Props> = (props: Props) => {
                         }
                     </IconButton>
                 }
-                onClick={props.onClick}
             >
                 {props.item.value.logo && (
                     <ListItemAvatar>

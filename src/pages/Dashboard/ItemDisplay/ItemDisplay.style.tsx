@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 const Background = styled.div`
     background-color: #36393F;
-    width: calc(100vw - 300px);
+    width: calc(100vw - 350px);
     position: absolute;
-    left: 300px;
+    left: 350px;
     height: calc(95vh - 56px);
     overflow-y: auto;
 

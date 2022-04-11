@@ -20,7 +20,7 @@ const SelectWithLogoAndIcon: React.FC<Props> = (props: Props) => {
     const [selected, setSelected] = useState(props.default);
 
     const GetElementFromKey = (key?: string): ISelectWithLogoAndIconItem => {
-        if (!key) {
+        if (!key || props.default.key === key) {
             return props.default;
         }
 
@@ -44,6 +44,7 @@ const SelectWithLogoAndIcon: React.FC<Props> = (props: Props) => {
             return (
                 <SelectWithLogoAndIconItem item={item}
                     onClick={() => OnNewItemSelected(item.key)}
+                    key={item.key}
                 />
             );
         }).filter((item: JSX.Element | undefined) => {
@@ -65,6 +66,7 @@ const SelectWithLogoAndIcon: React.FC<Props> = (props: Props) => {
                     onClick={() => setIsOpen(!isOpen)}
                     isSelected={true}
                     isOpen={isOpen}
+                    key="default"
                 />
 
                 {isOpen && items}

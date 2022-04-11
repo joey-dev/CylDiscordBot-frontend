@@ -7,7 +7,7 @@ export const StyledLeftMenuBackground = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    width: 300px;
+    width: 350px;
     background-color: #1F2129;
     color: white;
     height: 100%;

@@ -1,30 +1,27 @@
 import React from 'react';
-import { IServer } from '../../../../interfaces/api/Server';
-import ServerItem from './ServerItem/ServerItem';
-import { StyledServerItemsDiv } from './ServerItems.style';
+import SelectWithLogoAndIcon from '../../../../components/forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIcon';
+import {
+    ISelectWithLogoAndIconItem,
+} from '../../../../components/forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem';
 
 
 interface Props {
-    currentServer?: IServer | undefined;
-    isListOpened: boolean;
-    serverList: JSX.Element[];
-    setIsListOpened: (value: boolean) => void
+    currentServer: ISelectWithLogoAndIconItem;
+    serverList: ISelectWithLogoAndIconItem[];
+    serverSelected: (server_id: string) => void;
 }
 
 const ServerItemsTemplate: React.FC<Props> = (props: Props) => {
     return (
-        <React.Fragment>
-            <ServerItem server={props.currentServer}
-                isCurrentServer={true}
-                listOpen={props.isListOpened}
-                onArrowClick={() => props.setIsListOpened(!props.isListOpened)}
-                onServerClick={() => {
-                }}
-            />
-            <StyledServerItemsDiv>
-                {props.isListOpened && props.serverList}
-            </StyledServerItemsDiv>
-        </React.Fragment>
+        <SelectWithLogoAndIcon
+            items={props.serverList}
+            default={props.currentServer}
+            itemClicked={(key) => {
+                if (key) {
+                    props.serverSelected(key);
+                }
+            }}
+        />
     );
 };
 

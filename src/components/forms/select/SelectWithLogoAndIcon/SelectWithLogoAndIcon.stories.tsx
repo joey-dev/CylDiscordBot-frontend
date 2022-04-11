@@ -1,7 +1,7 @@
 import { ComponentStory } from '@storybook/react';
 import React from 'react';
 import check from '../../../../assets/icons/check.svg';
-import { StyledCheckImg } from '../../../../pages/Dashboard/LeftMenu/ServerItems/ServerItem/ServerItem';
+import { StyledCheckImg } from '../../../../pages/Dashboard/LeftMenu/ServerItems/ServerItems.style';
 import ServerLogo from '../../../images/ServerLogo/ServerLogo';
 import SelectWithLogoAndIcon from './SelectWithLogoAndIcon';
 

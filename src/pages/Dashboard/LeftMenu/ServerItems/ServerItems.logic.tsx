@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import check from '../../../../assets/icons/check.svg';
+import unCheck from '../../../../assets/icons/uncheck.svg';
 import {
-    ISelectWithLogoAndIconItem
+    ISelectWithLogoAndIconItem,
 } from '../../../../components/forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem';
 import ServerLogo from '../../../../components/images/ServerLogo/ServerLogo';
 import { IDetailedServer, IServer } from '../../../../interfaces/api/Server';
-import ServerItem, { StyledCheckImg } from './ServerItem/ServerItem';
-import check from '../../../../assets/icons/check.svg';
-import unCheck from '../../../../assets/icons/uncheck.svg';
+import { StyledCheckImg } from './ServerItems.style';
 
 
 interface Props {
@@ -17,19 +18,17 @@ interface Props {
 }
 
 interface ReturnValue {
-    currentServer?: IServer;
-    isListOpened: boolean;
+    currentServer: ISelectWithLogoAndIconItem;
+    setCurrentServerId: React.Dispatch<React.SetStateAction<string | undefined>>
     serverList: ISelectWithLogoAndIconItem[];
-    setIsListOpened: (value: boolean) => void;
 }
 
 function ServerItemsLogic(props: Props): ReturnValue {
     const navigate = useNavigate();
-    const [isListOpened, setIsListOpened] = useState(false);
     const [currentServerId, setCurrentServerId] = useState(props.currentServerId);
 
-    let serverList: JSX.Element[] = [];
-    let currentServer: IServer | undefined;
+    let serverList: ISelectWithLogoAndIconItem[] = [];
+    let currentServer: ISelectWithLogoAndIconItem | undefined = undefined;
 
     useEffect(() => {
         if (currentServerId === undefined) {
@@ -42,23 +41,41 @@ function ServerItemsLogic(props: Props): ReturnValue {
 
     for (let server of props.servers) {
         if (currentServerId && server.id === currentServerId) {
-            currentServer = server;
+            currentServer = {
+                key: server.id,
+                value: {
+                    logo: <ServerLogo size={40}
+                        server={server}
+                    />,
+                    text: server.name,
+                    icon: <StyledCheckImg src={server.alreadyJoined ? check : unCheck} />,
+                },
+            };
         } else {
             serverList.push({
                 key: server.id,
                 value: {
-                    logo: <ServerLogo size={40} server={server}/>
-                    text: server.name
+                    logo: <ServerLogo size={40}
+                        server={server}
+                    />,
+                    text: server.name,
                     icon: <StyledCheckImg src={server.alreadyJoined ? check : unCheck} />,
                 },
-            } as ISelectWithLogoAndIconItem)
+            } as ISelectWithLogoAndIconItem);
         }
+    }
+
+    if (!currentServer) {
+        currentServer = {
+            value: {
+                text: 'Please select a server',
+            },
+        };
     }
 
     return {
         currentServer: currentServer,
-        isListOpened: isListOpened,
-        setIsListOpened: setIsListOpened,
+        setCurrentServerId: setCurrentServerId,
         serverList: serverList,
     };
 }

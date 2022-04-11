@@ -3,16 +3,20 @@ import { connect } from 'react-redux';
 import Loader from '../../../../components/layout/Loader/Loader';
 import { MapStateToProps } from '../../../../store';
 import { ServerStoreState } from '../../../../store/server';
+import { setServerStart } from '../../../../store/server/Action';
 import { UserStoreState } from '../../../../store/user';
 import ServerItemsLogic from './ServerItems.logic';
 import ServerItemsTemplate from './ServerItems.template';
 
+type DispatchProps = {
+    getServerStart: (server_id: string) => void;
+};
 
 type ServerItemsProps = {
     currentServerId?: string;
 };
 
-type Props = UserStoreState & ServerStoreState & ServerItemsProps;
+type Props = UserStoreState & ServerStoreState & ServerItemsProps & DispatchProps;
 
 const ServerItems: React.FC<Props> = (props: Props) => {
     if (!props.servers) {
@@ -27,10 +31,13 @@ const ServerItems: React.FC<Props> = (props: Props) => {
         server: props.server,
     });
 
-    return <ServerItemsTemplate isListOpened={logic.isListOpened}
+    return <ServerItemsTemplate
         serverList={logic.serverList}
-        setIsListOpened={logic.setIsListOpened}
         currentServer={logic.currentServer}
+        serverSelected={(server_id) => {
+            props.getServerStart(server_id);
+            logic.setCurrentServerId(server_id);
+        }}
     />;
 
 };
@@ -44,4 +51,14 @@ const mapStateToProps = (state: MapStateToProps) => {
     };
 };
 
-export default connect(mapStateToProps)(ServerItems);
+type DispatchPropsArgs = {
+    type: string;
+};
+
+const mapDispatchToProps = (dispatch: (arg0: DispatchPropsArgs) => void) => {
+    return {
+        getServerStart: (server_id: string) => dispatch(setServerStart(server_id)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ServerItems);
