@@ -1,9 +1,9 @@
-import Axios from '../../services/Axios/AxiosConfig';
 import { call, delay, put } from 'redux-saga/effects';
-import * as actions from './Action';
-import * as userActions from './../user/Action';
-import { IUser } from '../../interfaces/api/User';
 import { IApiError } from '../../interfaces/api/Error';
+import { IUser } from '../../interfaces/api/User';
+import Axios from '../../services/Axios/AxiosConfig';
+import * as userActions from './../user/Action';
+import * as actions from './Action';
 
 type LogoutSageAction = {
     logoutSucceed: () => void;
@@ -70,13 +70,13 @@ export function* authUserSaga(action: AuthUserSagaAction) {
         put(actions.authFail(error.response.data.error));
     });
 
-    if (response.data.hasOwnProperty("status_code") && response.data.status_code !== 200 && response.data.error && response.data.error_description) {
+    if (response.data.hasOwnProperty('status_code') && response.data.status_code !== 200 && response.data.error && response.data.error_description) {
         yield put(actions.authFail({
             name: response.data.error,
-            message: response.data.error_description
+            message: response.data.error_description,
         }));
     } else {
-        const responseData = response.data
+        const responseData = response.data;
 
         const expiresIn = responseData.data.expires_in;
 
@@ -138,6 +138,7 @@ type UserResponseData = {
 
 function* authUserLoginWithId(userId: string) {
     const response: UserResponse = yield Axios().get('/user').catch((error: IApiError) => {
+        // console.log(error);
         put(actions.authFail(error.response.data.error));
     });
 
@@ -148,6 +149,14 @@ function* authUserLoginWithId(userId: string) {
         token: response.data.token,
     };
 
-    yield put(userActions.setUserStart(user));
-    yield put(actions.authSuccess(user.user_id.toString(), user.token));
+    console.log(user);
+    if (!user.user_id) {
+        yield put(actions.authFail({
+            name: 'user not authenticated',
+            message: 'user is not authenticated anymore',
+        }));
+    } else {
+        yield put(userActions.setUserStart(user));
+        yield put(actions.authSuccess(user.user_id.toString(), user.token));
+    }
 }
