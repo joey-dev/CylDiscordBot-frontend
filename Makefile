@@ -1,2 +1,5 @@
+info:
+	echo "nothing"
+
 install:
-	npm install
+	echo "nothing"
