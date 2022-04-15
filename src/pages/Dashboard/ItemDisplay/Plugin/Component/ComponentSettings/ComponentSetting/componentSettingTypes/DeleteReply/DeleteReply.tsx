@@ -3,10 +3,10 @@ import { QuestionMark } from '@mui/icons-material';
 import { Autocomplete, AutocompleteRenderInputParams, IconButton, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Switch from '../../../../../../../../../../components/forms/Switch/Switch';
-import { IComponentServerSettings } from '../../../../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../../../../interfaces/api/Server';
-import Paragraph from '../../../../../../../../../../components/text/Paragraph/Paragraph';
+import Switch from '../../../../../../../../../components/forms/Switch/Switch';
+import { IComponentServerSettings } from '../../../../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
+import Paragraph from '../../../../../../../../../components/text/Paragraph/Paragraph';
 
 
 const StyledSetting = styled.div`

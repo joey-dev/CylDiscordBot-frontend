@@ -3,10 +3,10 @@ import { QuestionMark } from '@mui/icons-material';
 import { Checkbox, IconButton, Tooltip } from '@mui/material';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import Loader from '../../../../../../../../../../components/layout/Loader/Loader';
-import Paragraph from '../../../../../../../../../../components/text/Paragraph/Paragraph';
-import { IComponentServerSettings, ITypeData } from '../../../../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../../../../interfaces/api/Server';
+import Loader from '../../../../../../../../../components/layout/Loader/Loader';
+import Paragraph from '../../../../../../../../../components/text/Paragraph/Paragraph';
+import { IComponentServerSettings, ITypeData } from '../../../../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
 
 
 const StyledCheckboxes = styled.div`

@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Component from './Component/Component';
 import PluginHeader from './PluginHeader/PluginHeader';
-import { IFullModuleWithData } from '../../../../../interfaces/api/Module';
-import { IDetailedServer } from '../../../../../interfaces/api/Server';
-import { IEditServerData } from '../../../../../store/server/Sagas';
+import { IFullModuleWithData } from '../../../../interfaces/api/Module';
+import { IDetailedServer } from '../../../../interfaces/api/Server';
+import { IEditServerData } from '../../../../store/server/Sagas';
 
 
 const StyledBackground = styled.div`

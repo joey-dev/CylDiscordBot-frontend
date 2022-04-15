@@ -3,10 +3,10 @@ import { QuestionMark } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
-import Switch from '../../../../../../../../../../components/forms/Switch/Switch';
-import Paragraph from '../../../../../../../../../../components/text/Paragraph/Paragraph';
-import { IComponentServerSettings } from '../../../../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../../../../interfaces/api/Server';
+import Switch from '../../../../../../../../../components/forms/Switch/Switch';
+import Paragraph from '../../../../../../../../../components/text/Paragraph/Paragraph';
+import { IComponentServerSettings } from '../../../../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
 
 
 const StyledSwitch = styled.div`

@@ -1,9 +1,9 @@
 import { getItemTranslate, ILanguage } from '@cylbot/cyldiscordbotlanguage/index';
 import React from 'react';
 import styled from 'styled-components';
-import Paragraph from '../../../../../../components/text/Paragraph/Paragraph';
-import { IDetailedServer } from '../../../../../../interfaces/api/Server';
-import CapitalizeFirstLetter from '../../../../../../services/stringManipulation/CapitalizeFirstLetter';
+import Paragraph from '../../../../../components/text/Paragraph/Paragraph';
+import { IDetailedServer } from '../../../../../interfaces/api/Server';
+import CapitalizeFirstLetter from '../../../../../services/stringManipulation/CapitalizeFirstLetter';
 
 
 const StyledBackground = styled.div`

@@ -40,10 +40,10 @@ type ItemDisplayProps = {
 type Props = UserStoreState & ServerStoreState & ItemDisplayProps;
 
 const ItemDisplay: React.FC<Props> = (props: Props) => {
-    const logic = ItemDisplayLogic(
-        props.servers,
-        props.currentServerId,
-    );
+    const logic = ItemDisplayLogic({
+        servers: props.servers,
+        currentServerId: props.currentServerId,
+    });
 
     if (!logic.data || logic.loading) {
         return (
@@ -58,6 +58,7 @@ const ItemDisplay: React.FC<Props> = (props: Props) => {
         modules={props.modules}
         onComponentEnabledChange={props.onComponentEnabledChange}
         onComponentSettingChange={props.onComponentSettingChange}
+        params={logic.params}
     />;
 };
 

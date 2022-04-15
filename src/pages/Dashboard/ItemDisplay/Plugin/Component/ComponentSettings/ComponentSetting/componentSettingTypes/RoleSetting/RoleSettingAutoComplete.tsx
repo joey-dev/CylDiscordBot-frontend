@@ -1,5 +1,5 @@
 import React from 'react';
-import { IComponentServerSettings, IRolesData } from '../../../../../../../../../../interfaces/api/Component';
+import { IComponentServerSettings, IRolesData } from '../../../../../../../../../interfaces/api/Component';
 import AutoComplete from '../AutoComplete';
 
 

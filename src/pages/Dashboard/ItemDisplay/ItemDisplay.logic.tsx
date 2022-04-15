@@ -1,34 +1,45 @@
 import React from 'react';
+import { Params, useParams } from 'react-router-dom';
 import { IServer } from '../../../interfaces/api/Server';
 
 
 type ReturnValue = {
-    loading: boolean
+    loading: boolean,
     data?: {
         servers: IServer[],
         currentServer?: IServer,
-    }
+    },
+    params?: Readonly<Params<string>>;
+
 }
 
-const ItemDisplayLogic = (
+type ItemDisplayLogicProps = {
     servers?: IServer[],
     currentServerId?: string,
-): ReturnValue => {
-    const returnValue: ReturnValue = {
-        loading: true,
-    };
+}
 
-    if (!servers) return returnValue;
+const ItemDisplayLogic = (props: ItemDisplayLogicProps): ReturnValue => {
+    const params = useParams();
 
-    const currentServer = servers.find(server => server.id === currentServerId);
+    if (!props.servers) {
+        return {
+            loading: false,
+        }
+    }
 
-    returnValue.data = {
-        servers: servers,
+    const currentServer = props.servers.find(server => server.id === props.currentServerId);
+
+    const data = {
+        servers: props.servers,
         currentServer: currentServer,
     };
-    returnValue.loading = false;
+    const loading = false;
 
-    return returnValue;
+    return {
+        data,
+        loading,
+        params,
+    };
 
 };
 

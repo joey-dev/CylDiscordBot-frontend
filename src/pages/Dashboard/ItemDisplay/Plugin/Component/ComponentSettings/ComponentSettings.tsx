@@ -2,16 +2,16 @@ import { getItemTranslate } from '@cylbot/cyldiscordbotlanguage/index';
 import { Modal } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
-import Paragraph from '../../../../../../../components/text/Paragraph/Paragraph';
+import Paragraph from '../../../../../../components/text/Paragraph/Paragraph';
 import ComponentSetting from './ComponentSetting/ComponentSetting';
 import {
     IComponentDataTypes,
     IComponentServerSettings,
     IComponentSettings, IDeleteReplyData,
     IFullComponentWithData, ITypeData,
-} from '../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../interfaces/api/Server';
-import CapitalizeFirstLetter from '../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
+} from '../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../interfaces/api/Server';
+import CapitalizeFirstLetter from '../../../../../../services/stringManipulation/CapitalizeFirstLetter';
 
 
 const StyledModal = styled.div`
@@ -74,7 +74,7 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
 
     const sharedData: ISharedData = {
         type: typeData.data as ITypeData,
-        deleteReply: deleteReplyData.turned_on as boolean,
+        deleteReply: deleteReplyData.turned_on,
     }
 
     return (

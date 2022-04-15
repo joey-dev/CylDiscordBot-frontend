@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Switch from '../../../../../../../../../../components/forms/Switch/Switch';
-import Paragraph from '../../../../../../../../../../components/text/Paragraph/Paragraph';
-import { IComponentServerSettings, IRolesData } from '../../../../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../../../../interfaces/api/Server';
-import CapitalizeFirstLetter from '../../../../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
-import { MapStateToProps } from '../../../../../../../../../../store';
-import { ServerStoreState } from '../../../../../../../../../../store/server';
-import { getServerRolesStart } from '../../../../../../../../../../store/server/Action';
+import Switch from '../../../../../../../../../components/forms/Switch/Switch';
+import Paragraph from '../../../../../../../../../components/text/Paragraph/Paragraph';
+import { IComponentServerSettings, IRolesData } from '../../../../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
+import CapitalizeFirstLetter from '../../../../../../../../../services/stringManipulation/CapitalizeFirstLetter';
+import { MapStateToProps } from '../../../../../../../../../store';
+import { ServerStoreState } from '../../../../../../../../../store/server';
+import { getServerRolesStart } from '../../../../../../../../../store/server/Action';
 import RoleSettingAutoComplete from './RoleSettingAutoComplete';
 
 

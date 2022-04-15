@@ -8,8 +8,8 @@ import DeleteCommand
 import DeleteReply from './componentSettingTypes/DeleteReply/DeleteReply';
 import Ephemeral from './componentSettingTypes/Ephemeral/Ephemeral';
 import RoleSetting from './componentSettingTypes/RoleSetting/RoleSetting';
-import { IComponentServerSettings, IComponentSettings } from '../../../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../../../interfaces/api/Server';
+import { IComponentServerSettings, IComponentSettings } from '../../../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../../../interfaces/api/Server';
 import TypeSetting from './componentSettingTypes/TypeSetting/TypeSetting';
 
 

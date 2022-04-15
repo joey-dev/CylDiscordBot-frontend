@@ -1,13 +1,13 @@
 import { getItemTranslate, ILanguage } from '@cylbot/cyldiscordbotlanguage/index';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../../../../../components/forms/Button/Button';
-import Switch from '../../../../../../components/forms/Switch/Switch';
-import Paragraph from '../../../../../../components/text/Paragraph/Paragraph';
+import Button from '../../../../../components/forms/Button/Button';
+import Switch from '../../../../../components/forms/Switch/Switch';
+import Paragraph from '../../../../../components/text/Paragraph/Paragraph';
 import ComponentSettings from './ComponentSettings/ComponentSettings';
-import { IFullComponentWithData } from '../../../../../../interfaces/api/Component';
-import { IDetailedServer } from '../../../../../../interfaces/api/Server';
-import { IEditServerData } from '../../../../../../store/server/Sagas';
+import { IFullComponentWithData } from '../../../../../interfaces/api/Component';
+import { IDetailedServer } from '../../../../../interfaces/api/Server';
+import { IEditServerData } from '../../../../../store/server/Sagas';
 
 
 const StyledBackground = styled.div`
