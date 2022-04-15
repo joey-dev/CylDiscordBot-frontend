@@ -28,7 +28,6 @@ const ServerItems: React.FC<Props> = (props: Props) => {
     const logic = ServerItemsLogic({
         currentServerId: props.currentServerId,
         servers: props.servers,
-        server: props.server,
     });
 
     return <ServerItemsTemplate

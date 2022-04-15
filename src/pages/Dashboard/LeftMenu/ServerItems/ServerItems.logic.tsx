@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import check from '../../../../assets/icons/check.svg';
 import unCheck from '../../../../assets/icons/uncheck.svg';
 import {
     ISelectWithLogoAndIconItem,
 } from '../../../../components/forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem';
 import ServerLogo from '../../../../components/images/ServerLogo/ServerLogo';
-import { IDetailedServer, IServer } from '../../../../interfaces/api/Server';
+import { IServer } from '../../../../interfaces/api/Server';
 import { StyledCheckImg } from './ServerItems.style';
 
 
-interface Props {
+export interface ServerItemsLogicProps {
     currentServerId?: string;
     servers: IServer[];
-    server?: IDetailedServer;
 }
 
 interface ReturnValue {
     currentServer: ISelectWithLogoAndIconItem;
-    setCurrentServerId: React.Dispatch<React.SetStateAction<string | undefined>>
+    setCurrentServerId: React.Dispatch<React.SetStateAction<string | undefined>>;
     serverList: ISelectWithLogoAndIconItem[];
 }
 
-function ServerItemsLogic(props: Props): ReturnValue {
+function ServerItemsLogic(props: ServerItemsLogicProps): ReturnValue {
     const navigate = useNavigate();
     const [currentServerId, setCurrentServerId] = useState(props.currentServerId);
 
