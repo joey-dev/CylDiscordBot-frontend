@@ -3,7 +3,7 @@ import { IFullModuleWithData } from '../../../interfaces/api/Module';
 import { IDetailedServer } from '../../../interfaces/api/Server';
 import { IEditServerData } from '../../../store/server/Sagas';
 import { StyledLeftMenuBackground, StyledLeftMenuInnerBackground } from './LeftMenu.style';
-import ModuleList from './ModuleList/ModuleList';
+import Module from './Module/Module';
 import ServerItems from './ServerItems/ServerItems';
 
 
@@ -19,12 +19,17 @@ const LeftMenuTemplate: React.FC<Props> = (props: Props) => (
         <StyledLeftMenuInnerBackground>
             <ServerItems currentServerId={props.currentServerId}
             />
-            {(props.server !== undefined && props.modules !== undefined) && (
-                <ModuleList server={props.server}
-                    modules={props.modules}
-                    onPluginEnabledChange={props.onPluginEnabledChange}
-                />
-            )}
+            {props.server !== undefined && props.modules !== undefined &&
+                props.modules.map(module =>
+                    <Module key={module.id}
+                        detailedServer={props.server as IDetailedServer}
+                        data={module}
+                        onPluginEnabledChange={event =>
+                            props.onPluginEnabledChange({module_id: module.id, ...event})
+                        }
+                    />,
+                )
+            }
         </StyledLeftMenuInnerBackground>
     </StyledLeftMenuBackground>
 );

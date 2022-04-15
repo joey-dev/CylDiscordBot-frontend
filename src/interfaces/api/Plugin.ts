@@ -1,4 +1,4 @@
-import { ILanguage } from '@cylbot/cyldiscordbotlanguage/index';
+import { ILanguage } from '@cylbot/cyldiscordbotlanguage';
 import { IFullComponent, IFullComponentWithData } from './Component';
 
 export interface IPlugin {

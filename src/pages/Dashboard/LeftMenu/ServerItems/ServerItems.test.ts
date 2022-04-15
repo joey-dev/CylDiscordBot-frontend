@@ -59,5 +59,17 @@ describe('In the server items: ', () => {
         expect(result.current.currentServer.value.icon).toBeUndefined();
         expect(result.current.currentServer.value.logo).toBeUndefined();
     });
+
+    test('server list items are never empty', () => {
+        const {result} = renderHook(() => ServerItemsLogic({
+            currentServerId: parameters.currentServerId,
+            servers: servers,
+        }));
+
+        expect(result.current.serverList[0].key).not.toBeUndefined();
+        expect(result.current.serverList[0].value.icon).not.toBeUndefined();
+        expect(result.current.serverList[0].value.text).not.toBeUndefined();
+        expect(result.current.serverList[0].value.logo).not.toBeUndefined();
+    })
 });
 
