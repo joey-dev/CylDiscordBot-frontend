@@ -1,16 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ISharedData } from '../ComponentSettings.types';
-import ChannelSetting
-    from './componentSettingTypes/ChannelSetting/ChannelSetting';
-import DeleteCommand
-    from './componentSettingTypes/DeleteCommand/DeleteCommand';
-import DeleteReply from './componentSettingTypes/DeleteReply/DeleteReply';
-import Ephemeral from './componentSettingTypes/Ephemeral/Ephemeral';
-import RoleSetting from './componentSettingTypes/RoleSetting/RoleSetting';
+import Checkbox from '../../../../../../../components/forms/settingTypes/Checkbox/Checkbox';
+import Switch from '../../../../../../../components/forms/settingTypes/Switch/Switch';
 import { IComponentServerSettings, IComponentSettings } from '../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../interfaces/api/Server';
-import TypeSetting from './componentSettingTypes/TypeSetting/TypeSetting';
+import { ISharedData } from '../ComponentSettings.types';
+import ChannelSetting from './componentSettingTypes/ChannelSetting/ChannelSetting';
+import DeleteReply from './componentSettingTypes/DeleteReply/DeleteReply';
+import RoleSetting from './componentSettingTypes/RoleSetting/RoleSetting';
 
 
 const StyledComponent = styled.div`
@@ -28,6 +25,7 @@ type Props = {
 };
 
 const ComponentSettings: React.FC<Props> = (props: Props) => {
+    const languageName = props.detailedServer.language.small_name;
     let returnElement;
 
     switch (props.data.name) {
@@ -48,17 +46,19 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
             />;
             break;
         case 'type':
-            returnElement = <TypeSetting settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <Checkbox settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
-                isModalOpen={props.isModalOpen}
+                title="SETTINGS_TYPES_TITLE"
+                tooltip="SETTINGS_TYPES_DESCRIPTION"
+                languageName={languageName}
             />;
             break;
         case 'deleteCommand':
-            returnElement = <DeleteCommand settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <Switch settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
-                isModalOpen={props.isModalOpen}
+                title="SETTINGS_DELETE_COMMAND_TITLE"
+                tooltip="SETTINGS_DELETE_COMMAND_DESCRIPTION"
+                languageName={languageName}
             />;
             break;
         case 'deleteReply':
@@ -69,11 +69,12 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
             />;
             break;
         case 'ephemeral':
-            returnElement = <Ephemeral settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <Switch settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
-                isModalOpen={props.isModalOpen}
-                sharedData={props.sharedData}
+                title="SETTINGS_EPHEMERAL_TITLE"
+                tooltip="SETTINGS_EPHEMERAL_DESCRIPTION"
+                languageName={languageName}
+                disabled={!props.sharedData.type.slash || props.sharedData.deleteReply}
             />;
             break;
         default:
