@@ -36,7 +36,7 @@ const ItemDisplayTemplate: React.FC<Props> = (props: Props) => (
                         onComponentSettingChange={props.onComponentSettingChange}
                     />
                 ) : (
-                    <p>dashboard here!</p>
+                    <p>info page here!</p>
                 )
             ) : (
                 <NoFunctionalServer server={props.currentServer}

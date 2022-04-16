@@ -9,7 +9,7 @@ type ReturnValue = {
         servers: IServer[],
         currentServer?: IServer,
     },
-    params?: Readonly<Params<string>>;
+    params?: Readonly<Params>;
 
 }
 
@@ -23,24 +23,20 @@ const ItemDisplayLogic = (props: ItemDisplayLogicProps): ReturnValue => {
 
     if (!props.servers) {
         return {
-            loading: false,
+            loading: true,
         }
     }
 
     const currentServer = props.servers.find(server => server.id === props.currentServerId);
 
-    const data = {
-        servers: props.servers,
-        currentServer: currentServer,
-    };
-    const loading = false;
-
     return {
-        data,
-        loading,
+        data: {
+            servers: props.servers,
+            currentServer,
+        },
+        loading: false,
         params,
     };
-
 };
 
 export default ItemDisplayLogic;
