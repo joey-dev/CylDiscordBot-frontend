@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ISharedData } from '../ComponentSettings';
+import { ISharedData } from '../ComponentSettings.types';
 import ChannelSetting
     from './componentSettingTypes/ChannelSetting/ChannelSetting';
 import DeleteCommand

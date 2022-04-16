@@ -7,7 +7,7 @@ import Switch from '../../../../../../../../../components/forms/Switch/Switch';
 import Paragraph from '../../../../../../../../../components/text/Paragraph/Paragraph';
 import { IComponentServerSettings } from '../../../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../../../interfaces/api/Server';
-import { ISharedData } from '../../../ComponentSettings';
+import { ISharedData } from '../../../ComponentSettings.types';
 
 
 const StyledSwitch = styled.div`
