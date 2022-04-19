@@ -1,44 +1,110 @@
-import {
-    Autocomplete as MuiAutocomplete,
-    AutocompleteChangeDetails,
-    AutocompleteChangeReason,
-    AutocompleteRenderInputParams, TextField,
-} from '@mui/material';
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
+import { IChannelsData, IComponentServerSettings, IRolesData } from '../../../../../interfaces/api/Component';
+import { default as AutoCompleteForm } from '../../../Autocomplete/AutoComplete';
 
+export interface IAutoCompleteData {
+    id: string,
+    name: string,
+}
 
-type Props = {
-    options: readonly any[];
-    name: string;
-    onOpen: (event: React.SyntheticEvent) => void;
-    onClose: (event: React.SyntheticEvent, reason: string) => void;
-    onChange: (event: SyntheticEvent<Element, Event>, value: any[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<any> | undefined) => void;
-    value?: any[];
-};
+export type IAutoCompleteDataType = 'roles' | 'channels';
+
+interface SelectedDataFunctions {
+    roles: (data: IRolesData[]) => void,
+    channels: (data: IChannelsData[]) => void,
+}
+
+interface Props {
+    name: string,
+    getItems: () => void,
+    onComponentSettingChange: (data: IComponentServerSettings) => void,
+    data?: IAutoCompleteData[],
+    settings: IComponentServerSettings,
+    selectedData: IAutoCompleteData[],
+    setSelectedData: SelectedDataFunctions,
+    type: IAutoCompleteDataType,
+}
 
 const AutoComplete: React.FC<Props> = (props: Props) => {
     return (
-        <MuiAutocomplete
-            disablePortal
-            disableCloseOnSelect
-            id="combo-box-demo"
-            size="small"
-            multiple
-            sx={{width: '100%'}}
-
-            renderInput={(renderInputParams: AutocompleteRenderInputParams) =>
-                <TextField color="info" {...renderInputParams}
-                    label={props.name}
-                />
-            }
-
-            options={props.options}
-            onOpen={props.onOpen}
-            onClose={props.onClose}
-            onChange={props.onChange}
-            value={props.value}
+        <AutoCompleteForm
+            options={getValueForAutoCompleteFromData(props.data)}
+            name={props.name}
+            onOpen={() => props.getItems()}
+            onClose={() => props.onComponentSettingChange(componentSettingChange(props.settings, props.selectedData, props.type))}
+            onChange={(event, value, reason) => {
+                const fullRoles = getValueForDataFromAutoComplete(value, props.data);
+                SetSelectedData(props.setSelectedData, props.type)(fullRoles);
+                if (reason === 'clear') {
+                    props.onComponentSettingChange(componentSettingChange(props.settings, [], props.type));
+                } else if (reason === 'removeOption') {
+                    props.onComponentSettingChange(componentSettingChange(props.settings, fullRoles, props.type));
+                }
+            }}
+            value={getValueForAutoCompleteFromData(props.selectedData)}
         />
     );
+};
+
+const SetSelectedData = (setSelectedData: SelectedDataFunctions, type: IAutoCompleteDataType) => {
+    switch (type) {
+        case 'roles':
+            return setSelectedData.roles;
+        case 'channels':
+            return setSelectedData.channels;
+        default:
+            throw new Error("type unset");
+    }
+};
+
+const componentSettingChange = (settings: IComponentServerSettings, selectedData: IAutoCompleteData[], type: IAutoCompleteDataType): IComponentServerSettings => {
+    return {
+        ...settings,
+        ...{data: editRoleData(settings.data, selectedData, type)},
+    };
+};
+
+const editRoleData = (oldData: object, newData: IAutoCompleteData[], type: IAutoCompleteDataType): object => {
+    oldData = {
+        ...oldData,
+        [type]: newData,
+    };
+
+    return oldData;
+};
+
+const getValueForDataFromAutoComplete = (dataArray: string[], allData?: IAutoCompleteData[]): IAutoCompleteData[] => {
+    if (!allData || dataArray.length === 0) {
+        return [];
+    }
+
+    const returnValue: IAutoCompleteData[] = [];
+
+    dataArray.forEach(data => {
+        const foundData = allData.find(dataFound => dataFound.name === data);
+        if (foundData) {
+            returnValue.push(foundData);
+        }
+    });
+
+    return returnValue;
+};
+
+const getValueForAutoCompleteFromData = (data?: IAutoCompleteData[]): string[] => {
+    if (!data || data.length === 0) {
+        return [];
+    }
+
+    const returnValue: string[] = [];
+    data.forEach(data => {
+        returnValue.push(data.name);
+    });
+
+    if (returnValue.length === 0) {
+        return [];
+    }
+
+    return returnValue;
 };
 
 export default AutoComplete;

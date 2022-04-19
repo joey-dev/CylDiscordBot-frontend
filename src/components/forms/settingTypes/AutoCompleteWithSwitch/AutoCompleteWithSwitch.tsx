@@ -1,114 +1,187 @@
-import React from 'react';
-import {
-    IChannelsData,
-    IComponentServerSettings,
-    IRolesData,
-} from '../../../../interfaces/api/Component';
-import AutoComplete from '../util/AutoComplete/AutoComplete';
+import { ILanguage, ILanguages } from '@cylbot/cyldiscordbotlanguage';
+import { getItemTranslate } from '@cylbot/cyldiscordbotlanguage/index';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { IChannelsData, IComponentServerSettings, IRolesData } from '../../../../interfaces/api/Component';
+import { MapStateToProps } from '../../../../store';
+import { ServerStoreState } from '../../../../store/server';
+import { getServerChannelsStart, getServerRolesStart } from '../../../../store/server/Action';
+import Switch from '../../Switch/Switch';
+import AutoComplete, { IAutoCompleteData, IAutoCompleteDataType } from '../util/AutoComplete/AutoComplete';
+import Title from '../util/Title/Title';
+import Tooltip from '../util/Tooltip/Tooltip';
+import RolesCleanup from './cleanup/RolesCleanup';
 
-interface IData<T> {
-    data: T;
+
+const StyledSetting = styled.div`
+`;
+
+const StyledAutoComplete = styled.div`
+`;
+
+const StyledSwitch = styled.div`
+    text-align: right;
+    padding: 7px 0;
+`;
+
+
+interface ComponentProps {
+    settings: IComponentServerSettings;
+    onComponentSettingChange: (data: IComponentServerSettings) => void;
+    isModalOpen: boolean;
+    languageName: keyof ILanguages,
+    text: {
+        name: keyof ILanguage;
+        switchName: keyof ILanguage;
+        switchDescription: keyof ILanguage;
+        enabled: keyof ILanguage;
+        disabled: keyof ILanguage;
+    },
+    type: IAutoCompleteDataType;
 }
 
-type IDataWithoutParam = IData<IRolesData | IChannelsData>;
-type IDataType = "IRolesData" | "IChannelsData";
-
-type Props<T> = {
-    name: string;
-    getItems: () => void;
-    onComponentSettingChange: (data: IComponentServerSettings) => void;
-    data?: IData<T>[];
-    settings: IComponentServerSettings;
-    selectedData: IData<T>[];
-    setSelectedData: (value: IData<T>[]) => void;
-    type: IDataType;
+type DispatchProps = {
+    getServerRolesStart: (serverId: string) => void,
+    getServerChannelsStart: (serverId: string) => void,
 };
 
-const AutoCompleteWithSwitch: React.FC<Props<IRolesData | IChannelsData>> = (props: Props<IRolesData | IChannelsData>) => {
-    // let data;
-    // let selectedData;
-    // let setSelectedData;
-    //
-    // switch (props.type) {
-    //     case 'IChannelsData':
-    //         data = props.data as IData<IChannelsData>[];
-    //         selectedData = props.selectedData as IData<IChannelsData>[];
-    //         setSelectedData = props.setSelectedData as (value: IData<IChannelsData>[]) => void;
-    //         break;
-    //     case 'IRolesData':
-    //         data = props.data as IData<IRolesData>[];
-    //         selectedData = props.selectedData as IData<IRolesData>[];
-    //         setSelectedData = props.setSelectedData as (value: IData<IRolesData>[]) => void;
-    //         break;
-    // }
+type Props = ComponentProps & DispatchProps & ServerStoreState;
+
+const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
+    if (!hasCorrectData(props.settings.data)) {
+        throw new Error('data for autoCompleteWithSwitch settings is incorrect!');
+    }
+
+    const [selectedData, setSelectedData] = useState<IAutoCompleteData[]>([]);
+    const params = useParams();
+
+    const data = useMemo(() => {
+        if (props.type === 'roles' && props.roles) {
+            return convertPreciseDataToAutoCompleteData(props.roles);
+        }
+        if (props.type === 'channels' && props.channels) {
+            console.log(props.channels);
+            return convertPreciseDataToAutoCompleteData(props.channels);
+        }
+    }, [props.channels, props.roles, props.type]);
+
+    const SetSelectedDataFromRolesData = (data: IRolesData[]) => {
+        setSelectedData(convertPreciseDataToAutoCompleteData(data));
+    };
+
+    const SetSelectedDataFromChannelsData = (data: IChannelsData[]) => {
+        setSelectedData(convertPreciseDataToAutoCompleteData(data));
+    };
+
+    useEffect(() => {
+        if (props.isModalOpen) {
+            getData();
+        }
+    }, [props.isModalOpen]);
+
+    useEffect(() => {
+        if ('roles' in props.settings.data && props.type === 'roles') {
+            SetSelectedDataFromRolesData(props.settings.data.roles);
+        } else if ('channels' in props.settings.data && props.type === 'channels') {
+            SetSelectedDataFromChannelsData(props.settings.data.channels);
+        }
+    }, [props.settings.data]);
+
+    useEffect(() => {
+        if (props.type === 'roles') {
+            RolesCleanup({
+                selectedData: selectedData,
+                roles: props.roles,
+                onComponentSettingChange: props.onComponentSettingChange,
+                settings: props.settings,
+            });
+        }
+    }, [selectedData, props.roles]);
+
+
+    const getData = (): void => {
+        if (params.serverId) {
+            if (props.type === "roles") {
+                props.getServerRolesStart(params.serverId);
+            } else if (props.type === "channels") {
+                props.getServerChannelsStart(params.serverId);
+            }
+        }
+    };
+
     return (
-        <AutoComplete
-            options={getValueForAutoCompleteFromData(props.data)}
-            name={props.name}
-            onOpen={() => props.getItems()}
-            onClose={() => props.onComponentSettingChange(componentSettingChange(props.settings, props.selectedData, props.type))}
-            onChange={(event, value, reason) => {
-                const fullRoles = getValueForRolesFromAutoComplete(value, props.data);
-                props.setSelectedData(fullRoles);
-                if (reason === 'clear') {
-                    props.onComponentSettingChange(componentSettingChange(props.settings, [], props.type));
-                } else if (reason === 'removeOption') {
-                    props.onComponentSettingChange(componentSettingChange(props.settings, fullRoles, props.type));
-                }
-            }}
-            value={getValueForAutoCompleteFromData(props.selectedData)}
-        />
+        <StyledSetting>
+            <Title title={props.text.switchName}
+                languageName={props.languageName}
+            />
+            <Tooltip title={props.text.switchDescription}
+                languageName={props.languageName}
+            />
+            <StyledSwitch>
+                <Switch
+                    onChange={() => (
+                        props.onComponentSettingChange(
+                            {...props.settings, ...{turned_on: !props.settings.turned_on}},
+                        )
+                    )}
+                    checked={props.settings.turned_on}
+                />
+            </StyledSwitch>
+            <Title title={props.settings.turned_on ? props.text.enabled : props.text.disabled}
+                languageName={props.languageName}
+                text={props.text.name}
+                noFloat={true}
+            />
+            <StyledAutoComplete>
+                <AutoComplete
+                    name={getItemTranslate(props.languageName, props.text.name)}
+                    getItems={getData}
+                    onComponentSettingChange={props.onComponentSettingChange}
+                    data={data}
+                    settings={props.settings}
+                    selectedData={selectedData}
+                    setSelectedData={{
+                        roles: SetSelectedDataFromRolesData,
+                        channels: SetSelectedDataFromChannelsData,
+                    }}
+                    type={props.type}
+                />
+            </StyledAutoComplete>
+        </StyledSetting>
     );
 };
 
-const componentSettingChange = (settings: IComponentServerSettings, selectedData: IDataWithoutParam[], type: IDataType): IComponentServerSettings => {
+const hasCorrectData = (data: object): boolean => 'roles' in data || 'channels' in data;
+
+const convertPreciseDataToAutoCompleteData = (data: IChannelsData[] | IRolesData[]): IAutoCompleteData[] => {
+    return data.map(data => {
+        return {
+            id: data.id,
+            name: data.name,
+        };
+    });
+};
+
+const mapStateToProps = (state: MapStateToProps) => {
     return {
-        ...settings,
-        ...{data: editRoleData(settings.data, selectedData, type)},
+        roles: state.server.roles,
+        channels: state.server.channels,
     };
 };
 
-const editRoleData = (oldData: object, newData: IDataWithoutParam[], type: IDataType): object => {
-    oldData = {
-        ...oldData,
-        [type]: newData,
+type DispatchPropsArgs = {
+    type: string;
+    isSignUp?: boolean;
+    path?: string;
+};
+
+const mapDispatchToProps = (dispatch: (arg0: DispatchPropsArgs) => void) => {
+    return {
+        getServerRolesStart: (serverId: string) => dispatch(getServerRolesStart(serverId)),
+        getServerChannelsStart: (serverId: string) => dispatch(getServerChannelsStart(serverId)),
     };
-
-    return oldData;
 };
 
-const getValueForRolesFromAutoComplete = (dataArray: string[], allData?: IDataWithoutParam[]): IDataWithoutParam[] => {
-    if (!allData || dataArray.length === 0) {
-        return [];
-    }
-
-    const returnValue: IDataWithoutParam[] = [];
-
-    dataArray.forEach(data => {
-        const foundData = allData.find(dataFound => dataFound.data.name === data);
-        if (foundData) {
-            returnValue.push(foundData);
-        }
-    });
-
-    return returnValue;
-};
-
-const getValueForAutoCompleteFromData = (data?: IDataWithoutParam[]): string[] => {
-    if (!data || data.length === 0) {
-        return [];
-    }
-
-    const returnValue: string[] = [];
-    data.forEach(data => {
-        returnValue.push(data.data.name);
-    });
-
-    if (returnValue.length === 0) {
-        return [];
-    }
-
-    return returnValue;
-};
-
-export default AutoCompleteWithSwitch;
+export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteWithSwitch);

@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import AutoCompleteWithSwitch
+    from '../../../../../../../components/forms/settingTypes/AutoCompleteWithSwitch/AutoCompleteWithSwitch';
 import Checkbox from '../../../../../../../components/forms/settingTypes/Checkbox/Checkbox';
 import Switch from '../../../../../../../components/forms/settingTypes/Switch/Switch';
 import { IComponentServerSettings, IComponentSettings } from '../../../../../../../interfaces/api/Component';
@@ -30,20 +32,36 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
 
     switch (props.data.name) {
         case 'role':
-            returnElement = <RoleSetting settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <AutoCompleteWithSwitch
+                settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
-                loading={false}
                 isModalOpen={props.isModalOpen}
-            />;
+                languageName={languageName}
+                text={{
+                    name: "ROLES",
+                    switchName: "SETTINGS_ROLES_TITLE",
+                    switchDescription: "SETTINGS_ROLES_DESCRIPTION",
+                    enabled: "ENABLED",
+                    disabled: "DISABLED",
+                }}
+                type="roles"
+            />
             break;
         case 'channel':
-            returnElement = <ChannelSetting settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <AutoCompleteWithSwitch
+                settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
-                loading={false}
                 isModalOpen={props.isModalOpen}
-            />;
+                languageName={languageName}
+                text={{
+                    name: "CHANNELS",
+                    switchName: "SETTINGS_CHANNELS_TITLE",
+                    switchDescription: "SETTINGS_CHANNELS_DESCRIPTION",
+                    enabled: "ENABLED",
+                    disabled: "DISABLED"
+                }}
+                type="channels"
+            />
             break;
         case 'type':
             returnElement = <Checkbox settings={props.serverData}
