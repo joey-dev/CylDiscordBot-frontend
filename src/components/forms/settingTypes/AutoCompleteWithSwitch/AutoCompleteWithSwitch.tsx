@@ -28,18 +28,19 @@ const StyledSwitch = styled.div`
 
 
 interface ComponentProps {
-    settings: IComponentServerSettings;
-    onComponentSettingChange: (data: IComponentServerSettings) => void;
-    isModalOpen: boolean;
+    settings: IComponentServerSettings,
+    onComponentSettingChange: (data: IComponentServerSettings) => void,
+    isModalOpen: boolean,
     languageName: keyof ILanguages,
     text: {
-        name: keyof ILanguage;
-        switchName: keyof ILanguage;
-        switchDescription: keyof ILanguage;
-        enabled: keyof ILanguage;
-        disabled: keyof ILanguage;
+        name: keyof ILanguage,
+        switchName: keyof ILanguage,
+        switchDescription: keyof ILanguage,
+        enabled: keyof ILanguage,
+        disabled: keyof ILanguage,
     },
-    type: IAutoCompleteDataType;
+    type: IAutoCompleteDataType,
+    data?: IAutoCompleteData[],
 }
 
 type DispatchProps = {
@@ -54,7 +55,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
         throw new Error('data for autoCompleteWithSwitch settings is incorrect!');
     }
 
-    const [selectedData, setSelectedData] = useState<IAutoCompleteData[]>([]);
+    const [selectedData, setSelectedData] = useState<IAutoCompleteData[]|undefined>(undefined);
     const params = useParams();
 
     const data = useMemo(() => {
@@ -62,10 +63,13 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
             return convertPreciseDataToAutoCompleteData(props.roles);
         }
         if (props.type === 'channels' && props.channels) {
-            console.log(props.channels);
             return convertPreciseDataToAutoCompleteData(props.channels);
         }
-    }, [props.channels, props.roles, props.type]);
+        if (props.type === 'deleteReply' && props.data && props.data) {
+            return props.data;
+        }
+        return undefined;
+    }, [props.channels, props.roles, props.type, props.data]);
 
     const SetSelectedDataFromRolesData = (data: IRolesData[]) => {
         setSelectedData(convertPreciseDataToAutoCompleteData(data));
@@ -73,6 +77,14 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
 
     const SetSelectedDataFromChannelsData = (data: IChannelsData[]) => {
         setSelectedData(convertPreciseDataToAutoCompleteData(data));
+    };
+
+    const SetSelectedDataFromDeleteReplyData = (data: string|IAutoCompleteData[]) => {
+        if (typeof data === "string") {
+            setSelectedData(convertPreciseStringToAutoCompleteData(data));
+        } else {
+            setSelectedData(convertPreciseStringToAutoCompleteData(data[0].name));
+        }
     };
 
     useEffect(() => {
@@ -86,6 +98,8 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
             SetSelectedDataFromRolesData(props.settings.data.roles);
         } else if ('channels' in props.settings.data && props.type === 'channels') {
             SetSelectedDataFromChannelsData(props.settings.data.channels);
+        } else if ('second' in props.settings.data && props.type === "deleteReply") {
+            SetSelectedDataFromDeleteReplyData(props.settings.data.second);
         }
     }, [props.settings.data]);
 
@@ -103,9 +117,9 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
 
     const getData = (): void => {
         if (params.serverId) {
-            if (props.type === "roles") {
+            if (props.type === 'roles') {
                 props.getServerRolesStart(params.serverId);
-            } else if (props.type === "channels") {
+            } else if (props.type === 'channels') {
                 props.getServerChannelsStart(params.serverId);
             }
         }
@@ -145,6 +159,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
                     setSelectedData={{
                         roles: SetSelectedDataFromRolesData,
                         channels: SetSelectedDataFromChannelsData,
+                        deleteReply: SetSelectedDataFromDeleteReplyData,
                     }}
                     type={props.type}
                 />
@@ -153,7 +168,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
     );
 };
 
-const hasCorrectData = (data: object): boolean => 'roles' in data || 'channels' in data;
+const hasCorrectData = (data: object): boolean => 'roles' in data || 'channels' in data || 'second' in data;
 
 const convertPreciseDataToAutoCompleteData = (data: IChannelsData[] | IRolesData[]): IAutoCompleteData[] => {
     return data.map(data => {
@@ -162,6 +177,13 @@ const convertPreciseDataToAutoCompleteData = (data: IChannelsData[] | IRolesData
             name: data.name,
         };
     });
+};
+
+const convertPreciseStringToAutoCompleteData = (data: string): IAutoCompleteData[] => {
+    return [{
+        id: data,
+        name: data,
+    }];
 };
 
 const mapStateToProps = (state: MapStateToProps) => {

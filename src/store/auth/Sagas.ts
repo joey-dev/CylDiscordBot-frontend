@@ -138,7 +138,6 @@ type UserResponseData = {
 
 function* authUserLoginWithId(userId: string) {
     const response: UserResponse = yield Axios().get('/user').catch((error: IApiError) => {
-        // console.log(error);
         put(actions.authFail(error.response.data.error));
     });
 
@@ -149,7 +148,6 @@ function* authUserLoginWithId(userId: string) {
         token: response.data.token,
     };
 
-    console.log(user);
     if (!user.user_id) {
         yield put(actions.authFail({
             name: 'user not authenticated',

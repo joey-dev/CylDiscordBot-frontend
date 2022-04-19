@@ -8,22 +8,23 @@ import React, { SyntheticEvent } from 'react';
 
 
 type Props = {
-    options: readonly any[];
+    options: readonly any[]|any;
     name: string;
     onOpen: (event: React.SyntheticEvent) => void;
     onClose: (event: React.SyntheticEvent, reason: string) => void;
     onChange: (event: SyntheticEvent<Element, Event>, value: any[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<any> | undefined) => void;
-    value?: any[];
+    value?: any|any[];
+    multiple: boolean;
 };
 
 const AutoComplete: React.FC<Props> = (props: Props) => {
     return (
         <MuiAutocomplete
             disablePortal
-            disableCloseOnSelect
+            disableCloseOnSelect={props.multiple}
             id="combo-box-demo"
             size="small"
-            multiple
+            multiple={props.multiple}
             sx={{width: '100%'}}
 
             renderInput={(renderInputParams: AutocompleteRenderInputParams) =>

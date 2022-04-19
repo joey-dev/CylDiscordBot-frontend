@@ -4,12 +4,10 @@ import AutoCompleteWithSwitch
     from '../../../../../../../components/forms/settingTypes/AutoCompleteWithSwitch/AutoCompleteWithSwitch';
 import Checkbox from '../../../../../../../components/forms/settingTypes/Checkbox/Checkbox';
 import Switch from '../../../../../../../components/forms/settingTypes/Switch/Switch';
+import { IAutoCompleteData } from '../../../../../../../components/forms/settingTypes/util/AutoComplete/AutoComplete';
 import { IComponentServerSettings, IComponentSettings } from '../../../../../../../interfaces/api/Component';
 import { IDetailedServer } from '../../../../../../../interfaces/api/Server';
 import { ISharedData } from '../ComponentSettings.types';
-import ChannelSetting from './componentSettingTypes/ChannelSetting/ChannelSetting';
-import DeleteReply from './componentSettingTypes/DeleteReply/DeleteReply';
-import RoleSetting from './componentSettingTypes/RoleSetting/RoleSetting';
 
 
 const StyledComponent = styled.div`
@@ -38,14 +36,14 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                 isModalOpen={props.isModalOpen}
                 languageName={languageName}
                 text={{
-                    name: "ROLES",
-                    switchName: "SETTINGS_ROLES_TITLE",
-                    switchDescription: "SETTINGS_ROLES_DESCRIPTION",
-                    enabled: "ENABLED",
-                    disabled: "DISABLED",
+                    name: 'ROLES',
+                    switchName: 'SETTINGS_ROLES_TITLE',
+                    switchDescription: 'SETTINGS_ROLES_DESCRIPTION',
+                    enabled: 'ENABLED',
+                    disabled: 'DISABLED',
                 }}
                 type="roles"
-            />
+            />;
             break;
         case 'channel':
             returnElement = <AutoCompleteWithSwitch
@@ -54,14 +52,14 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                 isModalOpen={props.isModalOpen}
                 languageName={languageName}
                 text={{
-                    name: "CHANNELS",
-                    switchName: "SETTINGS_CHANNELS_TITLE",
-                    switchDescription: "SETTINGS_CHANNELS_DESCRIPTION",
-                    enabled: "ENABLED",
-                    disabled: "DISABLED"
+                    name: 'CHANNELS',
+                    switchName: 'SETTINGS_CHANNELS_TITLE',
+                    switchDescription: 'SETTINGS_CHANNELS_DESCRIPTION',
+                    enabled: 'ENABLED',
+                    disabled: 'DISABLED',
                 }}
                 type="channels"
-            />
+            />;
             break;
         case 'type':
             returnElement = <Checkbox settings={props.serverData}
@@ -80,10 +78,29 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
             />;
             break;
         case 'deleteReply':
-            returnElement = <DeleteReply settings={props.serverData}
-                detailedServer={props.detailedServer}
+            returnElement = <AutoCompleteWithSwitch
+                settings={props.serverData}
                 onComponentSettingChange={props.onComponentSettingChange}
                 isModalOpen={props.isModalOpen}
+                languageName={languageName}
+                text={{
+                    name: 'SETTINGS_DELETE_REPLY_TITLE',
+                    switchName: 'SETTINGS_DELETE_REPLY_DESCRIPTION',
+                    switchDescription: 'SETTINGS_DELETE_REPLY_SECONDS',
+                    enabled: 'ENABLED',
+                    disabled: 'DISABLED',
+                }}
+                type="deleteReply"
+                data={Array(10)
+                    .fill(1)
+                    .map((x, y) => {
+                        const value = (x + y).toString();
+                        return {
+                            id: value,
+                            name: value,
+                        } as IAutoCompleteData;
+                    })
+                }
             />;
             break;
         case 'ephemeral':

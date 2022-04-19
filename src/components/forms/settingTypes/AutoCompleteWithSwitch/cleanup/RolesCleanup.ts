@@ -3,7 +3,7 @@ import { IAutoCompleteData } from '../../util/AutoComplete/AutoComplete';
 
 
 interface Props {
-    selectedData: IAutoCompleteData[],
+    selectedData?: IAutoCompleteData[],
     roles?: IRolesData[],
     onComponentSettingChange: (data: IComponentServerSettings) => void,
     settings: IComponentServerSettings

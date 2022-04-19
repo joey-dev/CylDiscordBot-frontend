@@ -1,5 +1,6 @@
 import React from 'react';
 import { IChannelsData, IComponentServerSettings, IRolesData } from '../../../../../interfaces/api/Component';
+import Loader from '../../../../layout/Loader/Loader';
 import { default as AutoCompleteForm } from '../../../Autocomplete/AutoComplete';
 
 export interface IAutoCompleteData {
@@ -7,11 +8,12 @@ export interface IAutoCompleteData {
     name: string,
 }
 
-export type IAutoCompleteDataType = 'roles' | 'channels';
+export type IAutoCompleteDataType = 'roles' | 'channels' | 'deleteReply';
 
 interface SelectedDataFunctions {
     roles: (data: IRolesData[]) => void,
     channels: (data: IChannelsData[]) => void,
+    deleteReply: (data: IAutoCompleteData[]) => void,
 }
 
 interface Props {
@@ -20,30 +22,48 @@ interface Props {
     onComponentSettingChange: (data: IComponentServerSettings) => void,
     data?: IAutoCompleteData[],
     settings: IComponentServerSettings,
-    selectedData: IAutoCompleteData[],
+    selectedData?: IAutoCompleteData[],
     setSelectedData: SelectedDataFunctions,
     type: IAutoCompleteDataType,
 }
 
 const AutoComplete: React.FC<Props> = (props: Props) => {
+    if (!props.data || !props.selectedData) {
+        return <Loader small={true} />;
+    }
+
     return (
         <AutoCompleteForm
-            options={getValueForAutoCompleteFromData(props.data)}
+            options={getValueForAutoCompleteFromData(props.type, props.data)}
             name={props.name}
             onOpen={() => props.getItems()}
-            onClose={() => props.onComponentSettingChange(componentSettingChange(props.settings, props.selectedData, props.type))}
+            onClose={() => props.onComponentSettingChange(componentSettingChange(props.settings, props.type, props.selectedData))}
             onChange={(event, value, reason) => {
                 const fullRoles = getValueForDataFromAutoComplete(value, props.data);
                 SetSelectedData(props.setSelectedData, props.type)(fullRoles);
                 if (reason === 'clear') {
-                    props.onComponentSettingChange(componentSettingChange(props.settings, [], props.type));
+                    props.onComponentSettingChange(componentSettingChange(props.settings, props.type, []));
                 } else if (reason === 'removeOption') {
-                    props.onComponentSettingChange(componentSettingChange(props.settings, fullRoles, props.type));
+                    props.onComponentSettingChange(componentSettingChange(props.settings, props.type, fullRoles));
                 }
             }}
-            value={getValueForAutoCompleteFromData(props.selectedData)}
+            value={getValueForAutoCompleteValueFromData(props.type, props.selectedData)}
+            multiple={multiple(props.type)}
         />
     );
+};
+
+const multiple = (type: IAutoCompleteDataType): boolean => {
+    switch (type) {
+        case 'roles':
+            return true;
+        case 'channels':
+            return true;
+        case 'deleteReply':
+            return false;
+        default:
+            throw new Error('Type not set for multiple');
+    }
 };
 
 const SetSelectedData = (setSelectedData: SelectedDataFunctions, type: IAutoCompleteDataType) => {
@@ -52,33 +72,64 @@ const SetSelectedData = (setSelectedData: SelectedDataFunctions, type: IAutoComp
             return setSelectedData.roles;
         case 'channels':
             return setSelectedData.channels;
+        case 'deleteReply':
+            return setSelectedData.deleteReply;
         default:
-            throw new Error("type unset");
+            throw new Error('type unset');
     }
 };
 
-const componentSettingChange = (settings: IComponentServerSettings, selectedData: IAutoCompleteData[], type: IAutoCompleteDataType): IComponentServerSettings => {
-    return {
-        ...settings,
-        ...{data: editRoleData(settings.data, selectedData, type)},
-    };
+const componentSettingChange = (settings: IComponentServerSettings, type: IAutoCompleteDataType, selectedData?: IAutoCompleteData[]): IComponentServerSettings => {
+    if (selectedData) {
+        return {
+            ...settings,
+            ...{data: editData(settings.data, selectedData, type)},
+        };
+    }
+
+    return settings;
 };
 
-const editRoleData = (oldData: object, newData: IAutoCompleteData[], type: IAutoCompleteDataType): object => {
+const editData = (oldData: object, newData: IAutoCompleteData[], type: IAutoCompleteDataType): object => {
+    const saveType = getSaveType(type);
+    const newRefinedData = getDataPerType(newData, type);
     oldData = {
         ...oldData,
-        [type]: newData,
+        [saveType]: newRefinedData,
     };
 
     return oldData;
 };
 
-const getValueForDataFromAutoComplete = (dataArray: string[], allData?: IAutoCompleteData[]): IAutoCompleteData[] => {
+const getSaveType = (type: IAutoCompleteDataType): string => {
+    switch (type) {
+        case 'deleteReply':
+            return 'second';
+
+        default:
+            return type;
+    }
+};
+
+const getDataPerType = (newData: IAutoCompleteData[], type: IAutoCompleteDataType) => {
+    switch (type) {
+        case 'deleteReply':
+            return newData[0].name;
+
+        default:
+            return newData;
+    }
+};
+
+const getValueForDataFromAutoComplete = (dataArray: string[] | string, allData?: IAutoCompleteData[]): IAutoCompleteData[] => {
     if (!allData || dataArray.length === 0) {
         return [];
     }
 
     const returnValue: IAutoCompleteData[] = [];
+    if (typeof dataArray === 'string') {
+        dataArray = [dataArray];
+    }
 
     dataArray.forEach(data => {
         const foundData = allData.find(dataFound => dataFound.name === data);
@@ -90,7 +141,20 @@ const getValueForDataFromAutoComplete = (dataArray: string[], allData?: IAutoCom
     return returnValue;
 };
 
-const getValueForAutoCompleteFromData = (data?: IAutoCompleteData[]): string[] => {
+
+const getValueForAutoCompleteValueFromData = (type: IAutoCompleteDataType, data?: IAutoCompleteData[]): string | string[] => {
+    const values = getValueForAutoCompleteFromData(type, data);
+    if (multiple(type)) {
+        return values;
+    }
+
+    if (values.length === 0) {
+        return '';
+    }
+    return values[0];
+};
+
+const getValueForAutoCompleteFromData = (type: IAutoCompleteDataType, data?: IAutoCompleteData[]): string | string[] => {
     if (!data || data.length === 0) {
         return [];
     }
