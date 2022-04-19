@@ -80,6 +80,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
     };
 
     const SetSelectedDataFromDeleteReplyData = (data: string | IAutoCompleteData[]) => {
+        console.log(data);
         if (typeof data === 'string') {
             setSelectedData(convertPreciseStringToAutoCompleteData(data));
         } else {

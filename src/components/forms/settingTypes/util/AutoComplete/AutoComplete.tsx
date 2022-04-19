@@ -37,13 +37,16 @@ const AutoComplete: React.FC<Props> = (props: Props) => {
             options={getValueForAutoCompleteFromData(props.type, props.data)}
             name={props.name}
             onOpen={() => props.getItems()}
-            onClose={() => props.onComponentSettingChange(componentSettingChange(props.settings, props.type, props.selectedData))}
+            onClose={() => {
+            }}
             onChange={(event, value, reason) => {
                 const fullRoles = getValueForDataFromAutoComplete(value, props.data);
                 SetSelectedData(props.setSelectedData, props.type)(fullRoles);
+                console.log({fullRoles});
+                console.log({reason});
                 if (reason === 'clear') {
                     props.onComponentSettingChange(componentSettingChange(props.settings, props.type, []));
-                } else if (reason === 'removeOption') {
+                } else if (reason === 'removeOption' || reason === 'selectOption') {
                     props.onComponentSettingChange(componentSettingChange(props.settings, props.type, fullRoles));
                 }
             }}
@@ -80,6 +83,7 @@ const SetSelectedData = (setSelectedData: SelectedDataFunctions, type: IAutoComp
 };
 
 const componentSettingChange = (settings: IComponentServerSettings, type: IAutoCompleteDataType, selectedData?: IAutoCompleteData[]): IComponentServerSettings => {
+    console.log(selectedData);
     if (selectedData) {
         return {
             ...settings,

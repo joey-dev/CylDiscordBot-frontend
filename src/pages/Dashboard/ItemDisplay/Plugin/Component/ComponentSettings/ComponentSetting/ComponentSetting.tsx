@@ -87,8 +87,8 @@ const ComponentSettings: React.FC<Props> = (props: Props) => {
                     name: 'SETTINGS_DELETE_REPLY_TITLE',
                     switchName: 'SETTINGS_DELETE_REPLY_DESCRIPTION',
                     switchDescription: 'SETTINGS_DELETE_REPLY_SECONDS',
-                    enabled: 'ENABLED',
-                    disabled: 'DISABLED',
+                    enabled: 'SETTINGS_DELETE_REPLY_TITLE',
+                    disabled: 'SETTINGS_DELETE_REPLY_TITLE',
                 }}
                 type="deleteReply"
                 data={Array(10)
