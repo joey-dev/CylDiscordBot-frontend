@@ -55,7 +55,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
         throw new Error('data for autoCompleteWithSwitch settings is incorrect!');
     }
 
-    const [selectedData, setSelectedData] = useState<IAutoCompleteData[]|undefined>(undefined);
+    const [selectedData, setSelectedData] = useState<IAutoCompleteData[] | undefined>(undefined);
     const params = useParams();
 
     const data = useMemo(() => {
@@ -79,8 +79,8 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
         setSelectedData(convertPreciseDataToAutoCompleteData(data));
     };
 
-    const SetSelectedDataFromDeleteReplyData = (data: string|IAutoCompleteData[]) => {
-        if (typeof data === "string") {
+    const SetSelectedDataFromDeleteReplyData = (data: string | IAutoCompleteData[]) => {
+        if (typeof data === 'string') {
             setSelectedData(convertPreciseStringToAutoCompleteData(data));
         } else {
             setSelectedData(convertPreciseStringToAutoCompleteData(data[0].name));
@@ -98,7 +98,7 @@ const AutoCompleteWithSwitch: React.FC<Props> = (props: Props) => {
             SetSelectedDataFromRolesData(props.settings.data.roles);
         } else if ('channels' in props.settings.data && props.type === 'channels') {
             SetSelectedDataFromChannelsData(props.settings.data.channels);
-        } else if ('second' in props.settings.data && props.type === "deleteReply") {
+        } else if ('second' in props.settings.data && props.type === 'deleteReply') {
             SetSelectedDataFromDeleteReplyData(props.settings.data.second);
         }
     }, [props.settings.data]);
