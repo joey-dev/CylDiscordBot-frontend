@@ -1,5 +1,5 @@
 import { all, takeEvery } from 'redux-saga/effects';
-import { IRolesData } from '../../interfaces/api/Component';
+import { IChannelsData, IRolesData } from '../../interfaces/api/Component';
 import { IFullModuleWithData } from '../../interfaces/api/Module';
 import { IDetailedServer, IServer } from '../../interfaces/api/Server';
 import * as actionTypes from './ActionTypes';
@@ -21,8 +21,8 @@ export type ServerStoreState = {
     server?: IDetailedServer;
     modules?: IFullModuleWithData[];
     roles?: IRolesData[];
-    channels?: IRolesData[];
-    loading: boolean
+    channels?: IChannelsData[];
+    loading?: boolean
     success?: boolean
     error?: string
 };

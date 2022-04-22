@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../components/layout/Loader/Loader';
-import { default as DashboardTemplate } from './DashboardTemplate/DashboardTemplate';
 import { IUserLogin } from '../../interfaces/api/User';
 import { MapStateToProps } from '../../store';
 import { ServerStoreState } from '../../store/server';
@@ -10,6 +8,8 @@ import { editServerDataStart, setServersStart, setServerStart } from '../../stor
 import { IEditServerData } from '../../store/server/Sagas';
 import { UserStoreState } from '../../store/user';
 import { getUserStart } from '../../store/user/Action';
+import UseDashboardLogic from './Dashboard.logic';
+import DashboardTemplate from './Dashboard.template';
 
 type DispatchProps = {
     getUserStart: (user: IUserLogin) => void;
@@ -21,51 +21,25 @@ type DispatchProps = {
 type Props = UserStoreState & DispatchProps & ServerStoreState;
 
 const Dashboard: React.FC<Props> = (props: Props) => {
-    const navigate = useNavigate();
-    const params = useParams();
+    const logic = UseDashboardLogic({
+        editServerDataStart: props.editServerDataStart,
+        getServersStart: props.getServersStart,
+        getServerStart: props.getServerStart,
+        user: props.user,
+        loading: props.loading,
+        servers: props.servers,
+    });
 
-    useEffect(() => {
-        props.getServersStart();
-    }, []);
-
-    const currentServerId = params.serverId;
-
-    useEffect(() => {
-        if (props.user === undefined) {
-            navigate('/');
-        }
-    }, [props.user, navigate]);
-
-    useEffect(() => {
-        if (currentServerId) {
-            props.getServerStart(currentServerId);
-        }
-    }, [currentServerId]);
-
-    const onComponentOrPluginSettingsChange = (event: IEditServerData): void => {
-        if (currentServerId) {
-            props.editServerDataStart(currentServerId, event);
-        }
-    };
-
-    let returnValue = (<Loader centered={true} />);
-
-    if (!props.loading && props.servers !== undefined) {
-        returnValue = (
-            <DashboardTemplate servers={props.servers}
-                currentServerId={currentServerId}
-                server={props.server}
-                modules={props.modules}
-                onPluginEnabledChange={onComponentOrPluginSettingsChange}
-                onComponentEnabledChange={onComponentOrPluginSettingsChange}
-                onComponentSettingChange={onComponentOrPluginSettingsChange}
-            />
-        );
+    if (!logic.data || logic.loading) {
+        return <Loader centered={true} />;
     }
 
-    return (
-        returnValue
-    );
+    return <DashboardTemplate
+        currentServerId={logic.data.currentServerId}
+        onPluginEnabledChange={logic.data.onPluginEnabledChange}
+        onComponentEnabledChange={logic.data.onComponentEnabledChange}
+        onComponentSettingChange={logic.data.onComponentSettingChange}
+    />;
 };
 
 const mapStateToProps = (state: MapStateToProps) => {

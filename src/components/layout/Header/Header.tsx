@@ -9,7 +9,7 @@ import { logout } from '../../../store/auth/Action';
 import { IDisplayLanguage, websiteStoreState } from '../../../store/website';
 import { setWebsiteLanguage } from '../../../store/website/Action';
 import Button from '../../forms/Button/Button';
-import Select from '../../forms/Select/Select';
+import Select from '../../forms/select/Select/Select';
 import GetLanguageSelectValues from './GetLanguageSelectValues/GetLanguageSelectValues';
 
 const OuterDiv = styled.div`

@@ -14,7 +14,7 @@ export function* watchUserSagas() {
 
 export type UserStoreState = {
     user?: IUser;
-    loading: boolean
+    loading?: boolean
     success?: boolean
     error?: string
 };

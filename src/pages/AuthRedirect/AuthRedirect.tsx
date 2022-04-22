@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { auth, setAuthRedirectPath } from '../../store/auth/Action';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -15,11 +15,15 @@ type Props = AuthStoreState & DispatchProps;
 
 const AuthRedirect: React.FC<Props> = (props: Props) => {
     const useQuery = () => new URLSearchParams(useLocation().search);
+    const [error, setError] = useState(false);
 
     const query = useQuery();
 
     const code = query.get('code');
     const navigate = useNavigate();
+
+    console.log(code);
+    console.log(props.error);
 
     useEffect(() => {
         if (props.isAuthenticated) {
@@ -27,19 +31,23 @@ const AuthRedirect: React.FC<Props> = (props: Props) => {
         }
     }, [props.isAuthenticated]);
 
-    if (!props.isAuthenticated && !props.loading) {
-        if (typeof code !== 'string' || props.error) {
-            return (
-                <p>an error occurred while logging in. please try again</p>
-            )
-        } else {
-            props.onAuth(code);
+    useEffect(() => {
+        if (!props.isAuthenticated && !props.loading) {
+            if (!code || props.error) {
+                setError(true);
+                console.log('error!!');
+            } else {
+                console.log("trying to send to api");
+                console.log(props.error);
+                props.onAuth(code);
+            }
         }
-    }
+    }, [props.isAuthenticated, props.loading]);
 
     return (
         <React.Fragment>
             {props.loading && <Loader centered />}
+            {error && <p>An error occurred while logging in. Please try again</p>}
         </React.Fragment>
     );
 };
