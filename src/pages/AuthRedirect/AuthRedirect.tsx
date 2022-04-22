@@ -35,10 +35,7 @@ const AuthRedirect: React.FC<Props> = (props: Props) => {
         if (!props.isAuthenticated && !props.loading) {
             if (!code || props.error) {
                 setError(true);
-                console.log('error!!');
             } else {
-                console.log("trying to send to api");
-                console.log(props.error);
                 props.onAuth(code);
             }
         }

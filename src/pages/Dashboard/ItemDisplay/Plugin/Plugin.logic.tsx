@@ -3,11 +3,11 @@ import { IFullModuleWithData } from '../../../../interfaces/api/Module';
 import { IFullPluginWithData } from '../../../../interfaces/api/Plugin';
 
 
-type ReturnValue = {
+interface ReturnValue {
     plugin?: IFullPluginWithData;
 }
 
-type PluginLogicProps = {
+export interface PluginLogicProps {
     modules: IFullModuleWithData[];
     pluginId: string;
     moduleId: string;
