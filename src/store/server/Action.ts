@@ -16,6 +16,7 @@ export const getServersState = (server: IServer[]) => {
 export const setServersStart = () => {
     return {
         type: actionTypes.SET_SERVERS_START,
+        payload: {},
     };
 };
 

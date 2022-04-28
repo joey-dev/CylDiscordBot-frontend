@@ -1,105 +1,71 @@
-import { renderHook } from '@testing-library/react-hooks';
-import UseDashboardLogic, { DashboardLogicProps } from './Dashboard.logic';
-import * as ReactRouterDom from 'react-router-dom';
+import { renderHook } from "@testing-library/react-hooks";
+import * as ReactRouterDom from "react-router-dom";
+import UseDashboardLogic, { DashboardLogicProps } from "./Dashboard.logic";
+import dashboardLogicProps from "./Dashboard.static";
 
 
-const mockedUsedNavigate = jest.fn();
+const mockedFunction = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom') as typeof ReactRouterDom,
-    useNavigate: () => mockedUsedNavigate,
-    useParams: jest.fn().mockReturnValue({}),
+jest.mock("react-router-dom", () => ({
+	...jest.requireActual("react-router-dom") as typeof ReactRouterDom,
+	useNavigate: () => mockedFunction,
+	useParams: jest.fn().mockReturnValue({}),
 }));
 
-describe('In the dashboard: ', () => {
+jest.mock('react-redux', () => ({
+	useSelector: jest.fn(),
+	useDispatch: () => mockedFunction
+}));
 
-    const parameters: DashboardLogicProps = {
-        editServerDataStart: (server_id = 'test', data = {type: 'plugin'}) => {
-        },
-        getServerStart: (server_id = 'serverId') => {
-        },
-        getServersStart: () => {
-        },
-        user: {
-            id: 1,
-            username: 'Emorn Utaz',
-            user_id: '214507099093204992',
-            token: 'YcbdR5lC4g9wjokiVdCngeTOwKukpP',
-        },
-        loading: true,
-        servers: [
-            {
-                id: '794988966590808124',
-                name: 'Joey\'s bot test',
-                icon: null,
-                owner: true,
-                permissions: '2199023255551',
-                features: [],
-                alreadyJoined: true,
-            },
-        ],
+describe("In the dashboard: ", () => {
+	let parameters: DashboardLogicProps = dashboardLogicProps;
 
-    };
+	beforeEach(() => {
+		parameters = {...dashboardLogicProps};
+	});
 
-    test('Loading is true when Servers are undefined', () => {
-        const {result} = renderHook(() => UseDashboardLogic({
-            editServerDataStart: parameters.editServerDataStart,
-            getServersStart: parameters.getServersStart,
-            getServerStart: parameters.getServerStart,
-        }));
+	test("Loading is true when Servers are undefined", () => {
+		delete parameters.servers;
 
-        expect(result.current.loading).toBe(true);
-    });
+		const {result} = renderHook(() => UseDashboardLogic(parameters));
 
-    test('Loading is false when Servers are defined', () => {
-        const {result} = renderHook(() => UseDashboardLogic({
-            editServerDataStart: parameters.editServerDataStart,
-            servers: parameters.servers,
-            getServersStart: parameters.getServersStart,
-            getServerStart: parameters.getServerStart,
-        }));
+		expect(result.current.loading).toBe(true);
+	});
 
-        expect(result.current.loading).toBe(false);
-    });
+	test("Loading is false when Servers are defined", () => {
+		const {result} = renderHook(() => UseDashboardLogic(parameters));
 
-    test('onComponentOrPluginSettingsChange runs function editServerDataStart on launch with currentServerId', () => {
-        jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({'serverId': '24324'});
+		expect(result.current.loading).toBe(false);
+	});
 
-        const {result} = renderHook(() => UseDashboardLogic({
-            editServerDataStart: parameters.editServerDataStart,
-            getServersStart: parameters.getServersStart,
-            getServerStart: parameters.getServerStart,
-            servers: parameters.servers,
-        }));
+	test("onComponentOrPluginSettingsChange runs function editServerDataStart on launch with currentServerId", () => {
+		jest.spyOn(ReactRouterDom, "useParams").mockReturnValue({"serverId": "24324"});
 
-        expect(result.current.data).not.toBeUndefined();
+		const {result} = renderHook(() => UseDashboardLogic(parameters));
 
-        if (result.current.data) {
-            expect(
-                result.current.data.onComponentEnabledChange({type: 'plugin'}),
-            ).toBe(true);
-        }
-    });
+		expect(result.current.data).not.toBeUndefined();
+
+		if (result.current.data) {
+			expect(
+				result.current.data.onComponentEnabledChange({type: "plugin"}),
+			).toBe(true);
+		}
+	});
 
 
-    test('onComponentOrPluginSettingsChange runs function editServerDataStart on launch without currentServerId', () => {
-        jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({});
+	test("onComponentOrPluginSettingsChange runs function editServerDataStart on launch without currentServerId", () => {
+		jest.spyOn(ReactRouterDom, "useParams").mockReturnValue({});
 
-        const {result} = renderHook(() => UseDashboardLogic({
-            editServerDataStart: parameters.editServerDataStart,
-            servers: parameters.servers,
-            getServersStart: parameters.getServersStart,
-            getServerStart: parameters.getServerStart,
-        }));
+		const {result} = renderHook(() => UseDashboardLogic(parameters));
 
-        expect(result.current.data).not.toBeUndefined();
+		expect(result.current.data).not.toBeUndefined();
 
-        if (result.current.data) {
-            expect(
-                result.current.data.onComponentEnabledChange({type: 'plugin'}),
-            ).toBe(false);
-        }
-    });
+		if (result.current.data) {
+			expect(
+				result.current.data.onComponentEnabledChange({type: "plugin"}),
+			).toBe(false);
+		}
+	});
 
 });
 

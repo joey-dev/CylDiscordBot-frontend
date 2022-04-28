@@ -5,14 +5,14 @@ import Dashboard from '../../../pages/Dashboard/Dashboard';
 
 const PrivateRoute = [
     <Route path="/dashboard"
-        element={<Dashboard loading={false} />}
+        element={<Dashboard />}
         key="dashboard"
     >
         <Route path=":serverId"
-            element={<Dashboard loading={false} />}
+            element={<Dashboard />}
         >
             <Route path=":moduleId/:pluginId"
-                element={<Dashboard loading={false} />}
+                element={<Dashboard />}
             />
         </Route>
     </Route>

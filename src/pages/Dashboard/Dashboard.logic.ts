@@ -1,78 +1,80 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IServer } from '../../interfaces/api/Server';
-import { IUser } from '../../interfaces/api/User';
-import { IEditServerData } from '../../store/server/Sagas';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { IServer } from "../../interfaces/api/Server";
+import { IUser } from "../../interfaces/api/User";
+import { AppDispatch } from "../../store";
+import { editServerDataStart, setServersStart, setServerStart } from "../../store/server/Action";
+import { IEditServerData } from "../../store/server/Sagas";
+import { onComponentEnabledChange, onComponentSettingChange, onPluginEnabledChange } from "./Dashboard.types";
 
 
-type ReturnValue = {
-    loading: boolean;
-    data?: {
-        servers: IServer[];
-        currentServerId?: string;
-        onPluginEnabledChange: (event: IEditServerData) => boolean;
-        onComponentEnabledChange: (event: IEditServerData) => boolean;
-        onComponentSettingChange: (data: IEditServerData) => boolean;
-    };
+interface DashboardLogicReturnValue {
+	loading: boolean;
+	data?: {
+		servers: IServer[];
+		currentServerId?: string;
+		onPluginEnabledChange: onPluginEnabledChange,
+		onComponentEnabledChange: onComponentEnabledChange,
+		onComponentSettingChange: onComponentSettingChange,
+	};
 }
 
-export type DashboardLogicProps = {
-    editServerDataStart: (server_id: string, data: IEditServerData) => void,
-    getServersStart: () => void,
-    getServerStart: (server_id: string) => void
-    user?: IUser,
-    loading?: boolean,
-    servers?: IServer[],
+export interface DashboardLogicProps {
+	user?: IUser,
+	loading?: boolean,
+	servers?: IServer[],
 }
 
-function UseDashboardLogic(props: DashboardLogicProps): ReturnValue {
-    const navigate = useNavigate();
-    const params = useParams();
-    const currentServerId = params.serverId;
+function UseDashboardLogic(props: DashboardLogicProps): DashboardLogicReturnValue {
+	const navigate = useNavigate();
+	const params = useParams();
+	const currentServerId = params.serverId;
+	const dispatch = useDispatch<AppDispatch>();
 
-    const returnValue: ReturnValue = {
-        loading: true,
-    };
+	const returnValue: DashboardLogicReturnValue = {
+		loading: true,
+	};
 
-    useEffect(() => {
-        props.getServersStart();
-    }, []);
+	useEffect(() => {
+		dispatch(setServersStart());
+	}, []);
 
-    useEffect(() => {
-        if (props.user === undefined) {
-            navigate('/');
-        }
-    }, [props.user, navigate]);
+	useEffect(() => {
+		if (props.user === undefined) {
+			navigate("/");
+		}
+	}, [props.user, navigate]);
 
-    useEffect(() => {
-        if (currentServerId) {
-            props.getServerStart(currentServerId);
-        }
-    }, [currentServerId]);
+	useEffect(() => {
+		if (currentServerId) {
+			dispatch(setServerStart(currentServerId));
+		}
+	}, [currentServerId]);
 
-    const onComponentOrPluginSettingsChange = (event: IEditServerData): boolean => {
-        if (currentServerId) {
-            props.editServerDataStart(currentServerId, event);
-            return true;
-        }
+	const onComponentOrPluginSettingsChange = (event: IEditServerData): boolean => {
+		if (currentServerId) {
+			dispatch(editServerDataStart(currentServerId, event));
+			return true;
+		}
 
-        return false;
-    };
+		return false;
+	};
 
 
-    if (!props.loading && props.servers !== undefined) {
-        returnValue.data = {
-            servers: props.servers,
-            currentServerId: currentServerId,
-            onPluginEnabledChange: onComponentOrPluginSettingsChange,
-            onComponentEnabledChange: onComponentOrPluginSettingsChange,
-            onComponentSettingChange: onComponentOrPluginSettingsChange,
-        };
+	if (!props.loading && props.servers !== undefined) {
+		returnValue.data = {
+			servers: props.servers,
+			currentServerId: currentServerId,
+			onPluginEnabledChange: onComponentOrPluginSettingsChange,
+			onComponentEnabledChange: onComponentOrPluginSettingsChange,
+			onComponentSettingChange: onComponentOrPluginSettingsChange,
+		};
 
-        returnValue.loading = false;
-    }
+		returnValue.loading = false;
+	}
 
-    return returnValue;
+	return returnValue;
 }
 
 export default UseDashboardLogic;

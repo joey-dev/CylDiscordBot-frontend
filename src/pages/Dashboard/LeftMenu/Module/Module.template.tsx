@@ -13,7 +13,7 @@ type Props = {
     title: string;
 };
 
-const ModuleTemplate: React.FC<Props> = (props: Props) => (
+const ModuleTemplate: React.FC<Props> = (props) => (
     <>
         <Title small={true}>
             {props.title}

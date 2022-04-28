@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Loader from '../../../components/layout/Loader/Loader';
 import { MapStateToProps } from '../../../store';
 import { ServerStoreState } from '../../../store/server';
@@ -18,6 +18,7 @@ type ItemDisplayProps = {
 type Props = UserStoreState & ServerStoreState & ItemDisplayProps;
 
 const ItemDisplay: React.FC<Props> = (props: Props) => {
+    // const data = useSelector(state => state.state);
     const logic = ItemDisplayLogic({
         servers: props.servers,
         currentServerId: props.currentServerId,

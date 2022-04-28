@@ -38,6 +38,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, sagaMiddleware)));
 
+export type AppDispatch = typeof store.dispatch;
+
 sagaMiddleware.run(watchAuthSagas);
 sagaMiddleware.run(watchUserSagas);
 sagaMiddleware.run(watchServerSagas);
