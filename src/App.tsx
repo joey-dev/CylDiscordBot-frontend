@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 import Loader from './components/layout/Loader/Loader';
 import Header from './components/layout/Header/Header';
 import PrivateRoute from './components/routing/PrivateRoute/PrivateRoute';

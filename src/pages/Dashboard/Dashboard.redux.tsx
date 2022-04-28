@@ -6,7 +6,7 @@ import { IUser } from "../../interfaces/api/User";
 import { MapStateToProps } from "../../store";
 
 
-interface DashboardRedux {
+interface DashboardReduxReturnValue {
 	user?: IUser,
 	server?: IDetailedServer,
 	servers?: IServer[],
@@ -14,12 +14,8 @@ interface DashboardRedux {
 	loading: boolean,
 }
 
-interface DashboardReduxReturnValue {
-	selector: DashboardRedux,
-}
-
 function UseDashboardRedux(): DashboardReduxReturnValue {
-	const selector = useSelector<MapStateToProps, DashboardRedux>(state => {
+	const selector = useSelector<MapStateToProps, DashboardReduxReturnValue>(state => {
 		return {
 			user: state.user.user,
 			server: state.server.server,
@@ -31,7 +27,7 @@ function UseDashboardRedux(): DashboardReduxReturnValue {
 
 
 	return {
-		selector,
+		...selector,
 	};
 }
 
