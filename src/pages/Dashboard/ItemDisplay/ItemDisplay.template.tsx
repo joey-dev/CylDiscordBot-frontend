@@ -4,8 +4,8 @@ import { IFullModuleWithData } from '../../../interfaces/api/Module';
 import { IDetailedServer, IServer } from '../../../interfaces/api/Server';
 import { IEditServerData } from '../../../store/server/Sagas';
 import StyledItemDisplay from './ItemDisplay.style';
-import NoFunctionalServer from './NoFunctionalServer/NoFunctionalServer';
-import Plugin from './Plugin/Plugin';
+import NoFunctionalServer from '../../../components/NoFunctionalServer/NoFunctionalServer';
+import Plugin from '../../../components/Plugin/Plugin';
 
 
 type Props = {

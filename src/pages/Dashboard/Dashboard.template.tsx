@@ -1,7 +1,7 @@
 import React from "react";
 import { IEditServerData } from "../../store/server/Sagas";
 import ItemDisplay from "./ItemDisplay/ItemDisplay";
-import LeftMenu from "./LeftMenu/LeftMenu";
+import LeftMenu from "../../components/LeftMenu/LeftMenu";
 
 
 export interface DashboardProps {

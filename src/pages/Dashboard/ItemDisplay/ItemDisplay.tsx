@@ -18,7 +18,6 @@ type ItemDisplayProps = {
 type Props = UserStoreState & ServerStoreState & ItemDisplayProps;
 
 const ItemDisplay: React.FC<Props> = (props: Props) => {
-    // const data = useSelector(state => state.state);
     const logic = ItemDisplayLogic({
         servers: props.servers,
         currentServerId: props.currentServerId,
