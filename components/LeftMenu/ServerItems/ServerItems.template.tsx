@@ -1,28 +1,28 @@
-import React from 'react';
-import SelectWithLogoAndIcon from '../../forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIcon';
+import React from "react";
+import SelectWithLogoAndIcon from "../../forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIcon";
 import {
     ISelectWithLogoAndIconItem,
-} from '../../forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem';
+} from "../../forms/select/SelectWithLogoAndIcon/SelectWithLogoAndIconItem/SelectWithLogoAndIconItem";
 
 
 interface Props {
-    currentServer: ISelectWithLogoAndIconItem;
-    serverList: ISelectWithLogoAndIconItem[];
-    serverSelected: (server_id: string) => void;
+	currentServer: ISelectWithLogoAndIconItem;
+	serverList: ISelectWithLogoAndIconItem[];
+	serverSelected: (server_id: string) => void;
 }
 
 const ServerItemsTemplate: React.FC<Props> = (props: Props) => {
-    return (
-        <SelectWithLogoAndIcon
-            items={props.serverList}
-            default={props.currentServer}
-            itemClicked={(key) => {
-                if (key) {
-                    props.serverSelected(key);
-                }
-            }}
-        />
-    );
+	return (
+		<SelectWithLogoAndIcon
+			items={props.serverList}
+			default={props.currentServer}
+			itemClicked={(key) => {
+				if (key) {
+					props.serverSelected(key);
+				}
+			}}
+		/>
+	);
 };
 
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 
 const Background = styled.div`
@@ -21,7 +21,7 @@ const Background = styled.div`
 `;
 
 const StyledItemDisplay = {
-    Background,
+	Background,
 };
 
 export default StyledItemDisplay;

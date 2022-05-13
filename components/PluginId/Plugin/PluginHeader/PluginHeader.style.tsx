@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 
 const Background = styled.div`
@@ -9,7 +9,7 @@ const Background = styled.div`
     margin-right: 100px;`;
 
 const Style = {
-    Background,
+	Background,
 };
 
 export default Style;

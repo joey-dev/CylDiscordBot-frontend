@@ -1,11 +1,11 @@
-import Image from 'next/image'
-import React from 'react';
-import styled from 'styled-components';
-import { IServer } from '../../../interfaces/api/Server';
+import Image from "next/image";
+import React from "react";
+import styled from "styled-components";
+import { IServer } from "../../../interfaces/api/Server";
 
 
 type EmptyLogoProps = {
-    size: number;
+	size: number;
 };
 
 const StyledEmptyLogo = styled.div<EmptyLogoProps>`
@@ -30,41 +30,41 @@ const StyledLogoContainer = styled.div<EmptyLogoProps>`
 
 
 type Props = {
-    size: number;
-    server: IServer;
+	size: number;
+	server: IServer;
 }
 
 const ServerLogo: React.FC<Props> = (props: Props) => {
-    const emptyLogo = (
-        <StyledEmptyLogo size={props.size}>
-            {GetFirstLetterOfEveryWordInStringMax3(props.server.name)}
-        </StyledEmptyLogo>
-    );
+	const emptyLogo = (
+		<StyledEmptyLogo size={props.size}>
+			{GetFirstLetterOfEveryWordInStringMax3(props.server.name)}
+		</StyledEmptyLogo>
+	);
 
-    const logo = (
-        <StyledLogoContainer size={props.size}>
-            <Image
-                src={"https://cdn.discordapp.com/icons/" + props.server.id + "/" + props.server.icon + ".png"}
-                width={props.size}
-                height={props.size}
-            />
-        </StyledLogoContainer>
-    )
+	const logo = (
+		<StyledLogoContainer size={props.size}>
+			<Image
+				src={"https://cdn.discordapp.com/icons/" + props.server.id + "/" + props.server.icon + ".png"}
+				width={props.size}
+				height={props.size}
+			/>
+		</StyledLogoContainer>
+	);
 
-    return (
-        <>
-            {!props.server.icon ? emptyLogo : logo}
-        </>
-    );
+	return (
+		<>
+			{!props.server.icon ? emptyLogo : logo}
+		</>
+	);
 };
 
 const GetFirstLetterOfEveryWordInStringMax3 = (string: string): string => {
-    const matches = string.match(/\b(\w)/g);
-    if (matches) {
-        return matches.join('').substring(0, 3);
-    }
+	const matches = string.match(/\b(\w)/g);
+	if (matches) {
+		return matches.join("").substring(0, 3);
+	}
 
-    return '';
-}
+	return "";
+};
 
 export default ServerLogo;

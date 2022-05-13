@@ -1,25 +1,25 @@
-import { getItemTranslate } from '@cylbot/cyldiscordbotlanguage';
-import { IFullModuleWithData } from '../../../interfaces/api/Module';
-import { IDetailedServer } from '../../../interfaces/api/Server';
+import { getItemTranslate } from "@cylbot/cyldiscordbotlanguage";
+import { IFullModuleWithData } from "../../../interfaces/api/Module";
+import { IDetailedServer } from "../../../interfaces/api/Server";
 
 
 type ReturnValue = {
-    title: string;
+	title: string;
 }
 
 export type ModuleLogicProps = {
-    detailedServer: IDetailedServer;
-    data: IFullModuleWithData;
+	detailedServer: IDetailedServer;
+	data: IFullModuleWithData;
 }
 
 function ModuleLogic(props: ModuleLogicProps): ReturnValue {
-    const languageName = props.detailedServer.language.small_name;
+	const languageName = props.detailedServer.language.small_name;
 
-    const title = getItemTranslate(languageName, props.data.name).toUpperCase();
+	const title = getItemTranslate(languageName, props.data.name).toUpperCase();
 
-    return {
-        title,
-    };
+	return {
+		title,
+	};
 }
 
 export default ModuleLogic;

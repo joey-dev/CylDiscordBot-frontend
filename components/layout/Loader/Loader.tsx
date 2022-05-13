@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
 const ldsDualRingKeyframe = keyframes`
     0% {
@@ -11,29 +11,29 @@ const ldsDualRingKeyframe = keyframes`
 `;
 
 type StyledDivProps = {
-    centered?: boolean;
+	centered?: boolean;
 };
 
 const StyledSpan = styled.span<StyledDivProps>`
-    position: ${(props: StyledDivProps) => (props.centered ? 'absolute' : 'unset')};
+    position: ${(props: StyledDivProps) => (props.centered ? "absolute" : "unset")};
     left: calc(50% - 32px);
     top: 30%;
 `;
 
 type StyledLoaderProps = {
-    small?: boolean;
+	small?: boolean;
 };
 
 const smallLoader = {
-    width: '15px',
-    height: '15px',
-    borderThickness: '3px',
+	width: "15px",
+	height: "15px",
+	borderThickness: "3px",
 };
 
 const largeLoader = {
-    width: '64px',
-    height: '64px',
-    borderThickness: '6px',
+	width: "64px",
+	height: "64px",
+	borderThickness: "6px",
 };
 
 const StyledLoader = styled.span<StyledLoaderProps>`
@@ -51,16 +51,16 @@ const StyledLoader = styled.span<StyledLoaderProps>`
 `;
 
 type Props = {
-    centered?: boolean;
-    small?: boolean;
+	centered?: boolean;
+	small?: boolean;
 };
 
 const Loader: React.FC<Props> = (props: Props) => {
-    return (
-        <StyledSpan centered={props.centered}>
-            <StyledLoader small={props.small} />
-        </StyledSpan>
-    );
+	return (
+		<StyledSpan centered={props.centered}>
+			<StyledLoader small={props.small} />
+		</StyledSpan>
+	);
 };
 
 export default Loader;

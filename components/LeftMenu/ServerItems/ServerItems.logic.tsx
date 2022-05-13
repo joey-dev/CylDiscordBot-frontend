@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IServer } from "../../../interfaces/api/Server";
 import check from "../../../public/assets/icons/check.svg";
 import unCheck from "../../../public/assets/icons/uncheck.svg";
@@ -36,7 +36,7 @@ function ServerItemsLogic(props: ServerItemsLogicProps): ReturnValue {
 		} else {
 			router.push("/Dashboard?serverId=" + serverId);
 		}
-	}
+	};
 
 	// useEffect(() => {
 	// 	console.log(currentServerId);

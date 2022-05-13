@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 
 const Modal = styled.div`
@@ -31,8 +31,8 @@ const Settings = styled.div`
 
 
 const Style = {
-    Modal,
-    Settings,
+	Modal,
+	Settings,
 };
 
 export default Style;

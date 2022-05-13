@@ -1,6 +1,6 @@
-import { ITypeData } from '../../../../../interfaces/api/Component';
+import { ITypeData } from "../../../../../interfaces/api/Component";
 
 export interface ISharedData {
-    type: ITypeData;
-    deleteReply: boolean
+	type: ITypeData;
+	deleteReply: boolean;
 }

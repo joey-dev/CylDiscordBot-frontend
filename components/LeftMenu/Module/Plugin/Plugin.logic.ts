@@ -20,7 +20,7 @@ function ModuleLogic(props: ModuleLogicProps): ReturnValue {
 	const languageName = props.detailedServer.language.small_name;
 	const title = CapitalizeFirstLetter(getItemTranslate(languageName, props.data.name));
 
-    const router = useRouter();
+	const router = useRouter();
 	const currentServerId = router.query.serverId || "";
 
 	const navigateToPlugin = () =>
