@@ -6,16 +6,21 @@ import Header from "../components/layout/Header/Header";
 import store from "../store";
 import theme from "../util/Theme";
 import "./../index.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 
 export default function MyApp({Component, pageProps}: AppProps) {
+	const queryClient = new QueryClient();
+
 	return (
 		<React.StrictMode>
 			<Provider store={store}>
 				<ThemeProvider theme={theme}>
-					<Header token={null} />
+					<QueryClientProvider client={queryClient}>
+						<Header token={null} />
 
-					<Component {...pageProps} />
+						<Component {...pageProps} />
+					</QueryClientProvider>
 				</ThemeProvider>
 			</Provider>
 		</React.StrictMode>

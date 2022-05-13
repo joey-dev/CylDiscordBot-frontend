@@ -6,6 +6,10 @@ import DashboardTemplate from "./Dashboard.template";
 
 
 const Dashboard: React.FC = () => {
+	if (typeof window === "undefined") {
+		return <Loader centered={true} />;
+	}
+
 	const redux = UseDashboardRedux();
 
 	const logic = UseDashboardLogic({

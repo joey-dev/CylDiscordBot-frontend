@@ -30,6 +30,8 @@ function UseDashboardLogic(props: DashboardLogicProps): DashboardLogicReturnValu
 	const router = useRouter();
 	const currentServerId = router.query.serverId as string | undefined;
 	const dispatch = useDispatch<AppDispatch>();
+	const token = localStorage.getItem('token');
+	const userId = localStorage.getItem('userId');
 
 	const returnValue: DashboardLogicReturnValue = {
 		loading: true,
@@ -40,10 +42,10 @@ function UseDashboardLogic(props: DashboardLogicProps): DashboardLogicReturnValu
 	}, []);
 
 	useEffect(() => {
-		if (props.user === undefined) {
+		if (!token || !userId) {
 			router.push("/");
 		}
-	}, [props.user, router]);
+	}, [token, userId, router]);
 
 	useEffect(() => {
 		if (currentServerId) {

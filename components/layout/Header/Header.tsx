@@ -1,5 +1,6 @@
 import { getItemTranslate, ILanguages } from "@cylbot/cyldiscordbotlanguage/index";
 import { SelectChangeEvent } from "@mui/material";
+import { InferGetServerSidePropsType, NextPageContext } from "next";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -34,7 +35,7 @@ type DispatchProps = {
 
 type Props = DispatchProps & AuthStoreState & websiteStoreState;
 
-const Header: React.FC<Props> = (props: Props) => {
+const Header: React.FC<Props> = (props) => {
 	const selector = useSelector<MapStateToProps, { isAuthenticated: boolean }>(state => {
 		return {
 			isAuthenticated: state.auth.userId !== null,
@@ -74,7 +75,7 @@ const Header: React.FC<Props> = (props: Props) => {
 	);
 
 	const dashboardButton = (
-		<Link href="/Dashboard">
+		<Link href="/Dashboard" >
 			<Button
 				variant="outlined"
 			>
