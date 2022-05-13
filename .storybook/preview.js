@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@mui/material';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 
-import theme from '../src/util/Theme';
+import theme from '../util/Theme';
 
 
 export const parameters = {
